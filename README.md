@@ -1,4 +1,5 @@
-# Neightec Wallet
+# Neightec-Wallet
+Open Source Money Management
 
 ## Project Structure
 
