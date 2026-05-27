@@ -56,6 +56,24 @@ services:
     networks:
       neightec-dev-env:
         ipv4_address: 172.45.1.84
+  
+  neightec-frontend:
+    container_name: neightec-frontend
+    restart: unless-stopped
+    ports:
+      - '4201:4201'
+    build:
+      context: ../../frontend
+      dockerfile: ../frontend/.devcontainer/Dockerfile.dev
+    working_dir: /workspace/frontend
+    command: sh -c "sleep infinity"
+    mem_limit: 3g
+    mem_reservation: 3g
+    volumes:
+      - ../../:/workspace:cached
+      - 'neightec-frontend-volume:/workspace/frontend/node_modules'
+    networks:
+      - neightec-dev-env
 volumes:
   neightec-psql-volume:
     name: neightec-psql-data
@@ -65,6 +83,8 @@ volumes:
     name: neightec-redis-data
   neightec-teedy-volume:
     name: neightec-teedy-data
+  neightec-frontend-volume:
+    name: neightec-frontend-data
     
 networks:
   neightec-dev-env:

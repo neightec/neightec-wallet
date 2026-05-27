@@ -1,0 +1,10 @@
+FROM node:20-alpine
+ 
+RUN apk add --no-cache git curl
+ 
+RUN npm cache clean --force
+RUN npm install -g @angular/cli --no-audit --no-fund
+ 
+RUN git config --global --add safe.directory '*'
+ 
+EXPOSE 4201
