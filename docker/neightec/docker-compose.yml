@@ -74,6 +74,25 @@ services:
       - 'neightec-frontend-volume:/workspace/frontend/node_modules'
     networks:
       - neightec-dev-env
+
+  neightec-backend:
+    container_name: neightec-backend
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    build:
+      context: ../../backend
+      dockerfile: ../backend/.devcontainer/Dockerfile.dev
+    working_dir: /workspace/backend
+    command: sh -c "sleep infinity"
+    mem_limit: 3g
+    mem_reservation: 3g
+    volumes:
+      - ../../:/workspace:cached
+      - neightec-backend-cache:/root/.m2
+    networks:
+      - neightec-dev-env
+
 volumes:
   neightec-psql-volume:
     name: neightec-psql-data
@@ -85,6 +104,8 @@ volumes:
     name: neightec-teedy-data
   neightec-frontend-volume:
     name: neightec-frontend-data
+  neightec-backend-cache:
+    name: neightec-backend-data
     
 networks:
   neightec-dev-env:

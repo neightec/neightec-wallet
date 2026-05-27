@@ -1,0 +1,11 @@
+FROM maven:3-eclipse-temurin-17
+
+RUN apt-get update && apt-get install -y git curl vim \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV MAVEN_OPTS="-Xmx2g -Xms1g -XX:+UseG1GC"
+ENV _JAVA_OPTIONS="-Xmx4g -Xms3g"
+
+RUN git config --global --add safe.directory '*'
+
+EXPOSE 8080

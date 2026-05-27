@@ -1,9 +1,9 @@
 --liquibase formatted sql
 --changeset nsu:1
 --comment: neightect_data add users
-CREATE SCHEMA IF NOT EXISTS neight;
+CREATE SCHEMA IF NOT EXISTS neightec;
 
-CREATE TABLE IF NOT EXISTS neight.neightec_users (
+CREATE TABLE IF NOT EXISTS neightec.neightec_users (
 	id                   uuid  NOT NULL  ,
 	first_name           varchar(100)    ,
 	last_name            varchar(100)    ,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS neight.neightec_users (
 	CONSTRAINT pk_neightec_users PRIMARY KEY ( id )
 );
 
-CREATE TABLE IF NOT EXISTS neight.file_signature (
+CREATE TABLE IF NOT EXISTS neightec.file_signature (
     id                      uuid  NOT NULL ,
  	hex_signature           bytea NOT NULL ,
  	iso_8859                varchar(100) NOT NULL ,
@@ -25,9 +25,9 @@ CREATE TABLE IF NOT EXISTS neight.file_signature (
 --liquibase formatted sql
 --changeset nsu:2
 --comment: add new table for file types
-DROP TABLE IF EXISTS neight.file_types;
+DROP TABLE IF EXISTS neightec.file_types;
 
-CREATE TABLE neight.file_types
+CREATE TABLE neightec.file_types
 (
     id                   uuid  NOT NULL  ,
     name	        VARCHAR(100),
@@ -40,9 +40,9 @@ CREATE TABLE neight.file_types
 --liquibase formatted sql
 --changeset nsu:3
 --comment: add new table for guest
-DROP TABLE IF EXISTS neight.guest;
+DROP TABLE IF EXISTS neightec.guest;
 
-CREATE TABLE neight.guest
+CREATE TABLE neightec.guest
 (
     id                  uuid NOT NULL,
     full_name	        VARCHAR(100),
