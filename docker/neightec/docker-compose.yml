@@ -5,11 +5,11 @@ services:
     ports:
       - '5481:5432'
     environment:
-      - POSTGRESQL_PASSWORD=neightecpass
+      - POSTGRES_PASSWORD=neightecpass
     image: postgres:17
     restart: unless-stopped
     volumes:
-      - 'neightec-psql-volume:/bitnami/postgresql'
+      - 'neightec-psql-volume:/var/lib/postgresql/data'
       - ./postgresql/init-postgresql.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       neightec-dev-env:
