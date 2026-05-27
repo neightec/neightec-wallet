@@ -1,0 +1,18 @@
+/**
+ * Global - contains basic crucial css behavior
+ * @date 13.2.22
+ * @author natsu
+**/
+
+@import './colors';
+@import './fonts';
+
+html {
+    body {
+
+        * {
+            margin-block: unset;
+            margin-inline: unset;
+        }
+    }
+}

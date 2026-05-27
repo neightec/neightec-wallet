@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="WARN">
+    <property name="LOG_FILE" value="${sys:catalina.home:-.}/logs/NeightTecAV-server.project"/>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+    <include resource="org/springframework/boot/logging/logback/console-appender.xml"/>
+    <include resource="org/springframework/boot/logging/logback/file-appender.xml"/>
+
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+            <charset>${CONSOLE_LOG_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_FILE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <!--            <pattern>%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>-->
+            <pattern>${FILE_LOG_PATTERN}</pattern>
+            <charset>${FILE_LOG_CHARSET}</charset>
+        </encoder>
+    </appender>
+
+    <!-- Log our own code -->
+    <logger name="de.profect" level="debug" additivity="false">
+        <appender-ref ref="logfile"/>
+        <appender-ref ref="console"/>
+    </logger>
+
+    <logger name="com.microsoft.sqlserver" level="info" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logfile"/>
+    </logger>
+    <!-- Log everything in testcontainers -->
+    <logger name="org.testcontainers" level="INFO"/>
+    <logger name="tc" level="INFO"/>
+    <logger name="com.github.dockerjava" level="WARN"/>
+    <logger name="com.github.dockerjava.zerodep.shaded.org.apache.hc.client5.http.wire" level="OFF"/>
+    <!-- Log spring stuff -->
+    <logger name="org.springframework" level="info" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logfile"/>
+    </logger>
+    <!-- Log everything in hibernate -->
+    <logger name="org.hibernate" level="info" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logfile"/>
+    </logger>
+    <!-- Log SQL statements -->
+    <logger name="org.hibernate.SQL" level="info" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logfile"/>
+    </logger>
+    <!-- Log JDBC bind parameters -->
+    <logger name="org.hibernate.type.descriptor.sql" level="info" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logfile"/>
+    </logger>
+    <!-- Don't log unimportant Hibernate warnings -->
+    <logger name="org.hibernate.engine.internal.StatefulPersistenceContext" level="error" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logfile"/>
+    </logger>
+    <!-- Log XACML / AuthZForce access control -->
+    <logger name="org.ow2.authzforce" level="info" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logfile"/>
+    </logger>
+    <!-- Transactions -->
+    <logger name="org.springframework.transaction.interceptor" level="info" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logfile"/>
+    </logger>
+    <!-- Azure-->
+    <logger name="com.azure.identity" level="error" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logfile"/>
+    </logger>
+    <!-- Log hikari -->
+    <logger name="com.zaxxer.hikari" level="info" additivity="false">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logfile"/>
+    </logger>
+    <root level="info">
+        <appender-ref ref="console"/>
+        <appender-ref ref="logfile"/>
+    </root>
+</configuration>

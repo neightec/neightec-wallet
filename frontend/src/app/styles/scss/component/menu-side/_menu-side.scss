@@ -1,0 +1,63 @@
+/**
+ * Menu Side
+ * @date 9.2.22
+ * @author natsu
+**/
+
+//root-parent
+$neight-app-menu-side-display: block !default;
+
+//parent
+$neight-menu-side-background-color: $neight-red !default;
+$neight-menu-side-color: #FFFFFF !default;
+$neight-menu-side-min-height: 100% !default;
+$neight-menu-side-border-radius: 0 4px 4px 0 !default;
+$neight-menu-side-transition-width: width 0.25s ease-in-out !default;
+$neight-menu-side-width: 5rem !default;
+
+//neight-menu-side-active
+$neight-menu-side-active-width: 10rem !default;
+
+app-menu-side {
+    display: $neight-app-menu-side-display;
+    
+    .neight-menu-side {
+        width: $neight-menu-side-width;
+        min-height: $neight-menu-side-min-height;
+        border-radius: $neight-menu-side-border-radius;
+        background-color: $neight-menu-side-background-color;
+        color: $neight-menu-side-color;
+        transition: $neight-menu-side-transition-width;
+        
+        &.neight-menu-side-active {
+            width: $neight-menu-side-active-width; 
+        }
+
+        .neight-menu-side-button {
+            // button {
+            //     display: flex;
+            // }
+            display: flex;
+            justify-content: center;
+            
+            &:hover {
+                cursor: pointer;
+            }
+
+            mat-icon {
+                height: 48px;
+                width: 48px;
+                font-size: 48px;
+            }
+        }
+
+        .neight-menu-side-active-indicator {
+            background-color: blue;
+            // -webkit-transform: rotate(90deg);
+            // -moz-transform: rotate(90deg);
+            // -o-transform: rotate(90deg);
+            // transform: rotate(90deg);
+            //TODO put position
+        }
+    }
+}

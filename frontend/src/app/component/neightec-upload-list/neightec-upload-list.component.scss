@@ -1,0 +1,43 @@
+:host {
+  display: block;
+
+  .dashboard-overview-view {
+    width: 60%;
+    border: 0.5px solid #8d8d8d;
+  }
+
+  .dashboard-overview-controls {
+    width: 100%;
+    padding: 0 0.5rem;
+
+    div {
+      // width: 100%;
+
+      &:first-child {
+        padding: 1rem;
+        min-height: 8rem;
+        border: 1px dashed #8d8d8d;
+      }
+
+      &:not(:first-child) {
+        padding-top: 0.5rem;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+  .dashboard-upload-files-controls {
+    padding: 0 0.5rem;
+  }
+
+  mat-divider {
+    margin: 0.5rem 0;
+  }
+}
+
+.input-hide {
+  display: none;
+}

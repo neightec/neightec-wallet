@@ -1,0 +1,55 @@
+<div class="dashboard-overview-view">
+  Charts View
+</div>
+<div class="dashboard-overview-controls">
+  <div
+    id="fileContainer"
+    [ngClass]="{'cds--file__drop-container--drag-over': dragOver}"
+    (click)="fileInput.click()"
+    (dragover)="onDragOver($event)"
+    (dragleave)="onDragLeave($event)"
+    (drop)="onDrop($event)"
+    >
+    Upload file via CSV File
+    <input #fileInput type="file" class="bx--file-input input-hide" multiple [accept]="true" tabindex="-1"/>
+  </div>
+  <div>
+    <button
+      [disabled]="this.addFiles.length == 0"
+      ibmButton="primary"
+      (click)="uploadFiles()">
+      Upload Files
+    </button>
+  </div>
+  <div>
+    <button
+      ibmButton="primary"
+      (click)="registerGuestManuallyPopup()"
+    >
+      Register Guest Manually
+    </button>
+  </div>
+</div>
+<div class="dashboard-upload-files-controls">
+  <!-- <h6>Files to upload</h6> -->
+  <div>
+    <ng-container *ngFor="let fileItem of addFiles">
+      <div>
+        <label>
+          {{ fileItem.name }}
+        </label>
+        <button (click)="deleteFile(fileItem)" >
+          <svg class="bx--btn__icon" ibmIcon="trash-can" size="16" fill="green"></svg>
+        </button>
+      </div>
+    </ng-container>
+  </div>
+  <!-- <div>
+    <button
+    [disabled]="this.addFiles.length == 0"
+    ibmButton="primary"
+    (click)="uploadFiles()">
+      Upload Files
+    </button>
+  </div> -->
+</div>

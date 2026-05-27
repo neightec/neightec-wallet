@@ -1,0 +1,37 @@
+<ibm-modal size="xs" [open]="true" (overlaySelected)="closeModal()">
+  <ng-container>
+    <ibm-modal-header (closeSelect)="closeModal()" [showCloseButton]="false">
+      <h3 ibmModalHeaderHeading>Register Guest(s)</h3>
+    </ibm-modal-header>
+    <section ibmModalContent>
+      <form [formGroup]="registerUserFormGroup">
+        <div class="basic-information__row" ibmRow>
+          <ibm-label>
+            Name
+          <input
+            ibmText
+            formControlName="registerUserFormControl"
+            (keydown.enter)="enterGuest()"/>
+          </ibm-label>
+        </div>
+        <div *ngIf="registerUserFormGroup.controls['registerUserFormControl'].errors?.['guestFullNameIsNotUnique']">
+          {{ 'Duplicate name detected' }}
+        </div>
+      </form>
+    </section>
+    <div>
+      <div *ngFor="let enteredGuest of enteredGuests; let index" class="register-guest-item">
+        <ibm-label >
+          {{ showEnteredGuest(enteredGuest) }}
+        </ibm-label>
+        <button (click)="deleteEnteredGuest(enteredGuest)">
+          <svg ibmIcon="activity" size="16"></svg>
+        </button>
+      </div>
+    </div>
+    <ibm-modal-footer>
+      <button class="cds--btn cds--btn--secondary" (click)="closeModal()">Cancel</button>
+      <button class="cds--btn cds--btn--danger" [disabled]="enteredGuests.length == 0" (click)="registerGuests()">Register</button>
+    </ibm-modal-footer>
+  </ng-container>
+</ibm-modal>

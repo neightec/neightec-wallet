@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-username
+  namespace: neight
+type: Opaque
+data:
+  username: bmVpZ2h0
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-password
+  namespace: neight
+type: Opaque
+data:
+  password: OHFMS0piWHVBOWJ3a05NcmVXYjg=

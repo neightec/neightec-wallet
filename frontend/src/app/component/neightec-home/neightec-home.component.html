@@ -1,0 +1,39 @@
+<mat-drawer-container #drawerContainer class="home-container" autosize>
+  <mat-drawer #drawer class="home-sidenav" mode="over">
+    <mat-sidenav-content>
+      <button mat-raised-button>
+        Menu 1
+      </button>
+      <button mat-raised-button>
+        Menu 2
+      </button>
+    </mat-sidenav-content>
+  </mat-drawer>
+
+  <div class="home-sidenav-content">
+    <button mat-raised-button (click)="drawer.toggle()">
+      Toggle sidenav
+    </button>
+  </div>
+  <div>
+    <mat-tab-group 
+      [selectedIndex]="selectedTabIndex"
+      >
+      <mat-tab label="Overview">Overview</mat-tab>
+      <mat-tab label="GästeListe">
+        <div class="list-container">
+          <div class="list-table-container">
+            <neightec-table
+              [columns]="columnTable">
+            </neightec-table>
+          </div>
+          <div class="upload-list-container">
+            <neightec-upload-list>
+
+            </neightec-upload-list>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</mat-drawer-container>

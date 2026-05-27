@@ -1,0 +1,19 @@
+<!--
+    If you have activated liquibase as your database versioning management system, please make sure to keep this file up to date.
+    Here you can add your project dependent database changes.
+    All changelogs from core development will be sorted by release and added here.
+    Make sure your custom changes are added "between" the correct releases.
+ -->
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+    <!-- core changelogs -->
+    <include file="classpath:database/neightec/neightec_data_model.sql"/>
+    <include file="classpath:database/neightec/neightec_data_mock.sql"/>
+
+    <!-- core deprecation changelogs /!\ use with caution -->
+    <!--<include file="classpath:/db/changelog/db.changelog-deprecation-7.20.7-0.json"/>-->
+
+<!--    <include file="classpath:/db/changelog/db.changelog-datamodel.json"/>-->
+<!--    <include file="classpath:/db/changelog/db.changelog-patches.json"/>-->
+</databaseChangeLog>

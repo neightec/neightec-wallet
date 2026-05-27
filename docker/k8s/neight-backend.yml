@@ -1,0 +1,68 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: neightec-backend
+  namespace: neight
+spec:
+  type: LoadBalancer
+  ports:
+  - name: "8000"
+    port: 8000
+    targetPort: 8000
+  selector:
+    neightec.service: neightec-backend
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    neightec.service: neightec-backend
+  name: neightec-backend
+  namespace: neight
+spec:
+  selector:
+    matchLabels:
+      neightec.service: neightec-backend
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        neightec.service: neightec-backend
+    spec:
+      containers:
+      - image: docker.io/nsuneightdocker/neightec-backend:20230908-1911
+        imagePullPolicy: IfNotPresent
+        name: neightec-backend
+        ports:
+        - containerPort: 8000
+        resources:
+          requests:
+            cpu: 50m
+            memory: 32Mi
+          limits:
+            cpu: 250m
+            memory: 64Mi
+      restartPolicy: Always
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: neightec-backend-ingress
+  namespace: neight
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - neight-app.com
+  rules:
+  - host: neight-app.com
+    http:
+      paths:
+      - path: /neight-api/
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: neightec-backend
+            port:
+              number: 8000

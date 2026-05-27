@@ -1,0 +1,43 @@
+@import 'carbon-components/scss/globals/scss/vendor/@carbon/elements/scss/themes/theme-maps';
+
+$custom-carbon--theme: (
+  interactive-01: $primaryColor,
+  interactive-03: $primaryColor,
+  interactive-04: $primaryColor,
+  link-01: $primaryColor,
+  link-inverse: $primaryColor,
+  inverse-link: $primaryColor,
+  inverse-support-04: $primaryColor,
+  inverse-focus-ui: $primaryColor,
+  support-info-inverse: $primaryColor,
+  focus-inverse: $primaryColor,
+  focus: $primaryTextColor,
+  background-brand: $primaryColor,
+  interactive: $primaryColor,
+  border-interactive: $primaryColor,
+  active-primary: $primaryColor,
+  active-tertiary: $primaryColor,
+  highlight: $primaryColor,
+  link-primary: $primaryColor,
+  button-primary: $primaryColor,
+  button-tertiary: $primaryColor,
+  button-primary-hover: $primaryColorHover,
+  button-tertiary-hover: $primaryColorHover,
+  hover-primary: $primaryColorHover,
+  hover-tertiary: $primaryColorHover,
+  button-primary-active: $primaryColor,
+  button-tertiary-active: $primaryColor,
+  brand-01: $primaryColor,
+  brand-03: $primaryColor,
+  inverse-01: $inverseColor,
+);
+
+$carbon--theme: map-merge($carbon--theme--white, $custom-carbon--theme);
+
+$feature-flags: (
+  grid-columns-16: true,
+);
+
+$font-path: 'carbon-components/src/globals/fonts';
+
+@import 'carbon-components/scss/globals/scss/styles.scss';

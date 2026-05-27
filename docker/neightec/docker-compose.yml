@@ -1,0 +1,74 @@
+version: '3.7'
+services:
+  neightec-psql:
+    container_name: neightec-psql
+    ports:
+      - '5481:5432'
+    environment:
+      - POSTGRES_PASSWORD=neightecpass
+    image: postgres:17
+    restart: unless-stopped
+    volumes:
+      - 'neightec-psql-volume:/var/lib/postgresql/data'
+      - ./postgresql/init-postgresql.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      neightec-dev-env:
+        ipv4_address: 172.45.1.81
+  neightec-mariadb:
+    container_name: neightec-mariadb
+    ports:
+      - '3308:3306'
+    image: mariadb:latest
+    restart: unless-stopped
+    environment:
+      - MYSQL_USER=neight
+      - MYSQL_PASSWORD=neightecpass
+      - MYSQL_ROOT_PASSWORD=neightecpass
+      - MYSQL_DATABASE=neightec-mariadb
+    networks:
+      neightec-dev-env:
+        ipv4_address: 172.45.1.82
+  neightec-redis:
+    container_name: neightec-redis
+    ports:
+      - '6379:6379'
+    image: redis:6.2-alpine
+    command: redis-server --save 20 1 --loglevel warning --requirepass somePasswordRedis
+    restart: unless-stopped
+    environment:
+      - REDIS_HOST=cache
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=somePasswordRedis
+    networks:
+      neightec-dev-env:
+        ipv4_address: 172.45.1.83
+  neightec-teedy:
+    container_name: neightec-teedy
+    ports:
+      - '8200:8080'
+    image: jdreinhardt/teedy:1.10
+    restart: unless-stopped
+    volumes:
+      - 'neightec-teedy-volume:/data'
+    environment:
+      - DOCS_BASE_URL=http://localhost:8200
+      - DOCS_GLOBAL_QUOTA=1073741824
+    networks:
+      neightec-dev-env:
+        ipv4_address: 172.45.1.84
+volumes:
+  neightec-psql-volume:
+    name: neightec-psql-data
+  neightec-mariadb-volume:
+    name: neightec-mariadb-data
+  neightec-redis-volume:
+    name: neightec-redis-data
+  neightec-teedy-volume:
+    name: neightec-teedy-data
+    
+networks:
+  neightec-dev-env:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.45.1.0/24

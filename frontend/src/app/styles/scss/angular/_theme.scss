@@ -1,0 +1,61 @@
+@use '@angular/material' as mat;
+
+//Font
+$primaryFont: 'Roboto', 'Helvetica Neue', sans-serif;
+$titleFont: 'Museo';
+
+$typography-config: mat.m2-define-typography-config(
+  $font-family: $primaryFont,
+  $headline-1: mat.m2-define-typography-level(112px, 112px, 300, $titleFont, -0.0134em),
+  $headline-2: mat.m2-define-typography-level(56px, 56px, 400, $titleFont, -0.0089em),
+  $headline-3: mat.m2-define-typography-level(45px, 48px, 400, $titleFont, 0em),
+  $headline-4: mat.m2-define-typography-level(34px, 40px, 400, $titleFont, 0.0074em),
+  $headline-5: mat.m2-define-typography-level(20px, 32px, 700, $titleFont, 0em),
+  $headline-6: mat.m2-define-typography-level(20px, 32px, 700, $titleFont, 0em),
+  $subtitle-1: mat.m2-define-typography-level(16px, 24px, 700, $titleFont, 0.0067em),
+  $subtitle-2: mat.m2-define-typography-level(16px, 28px, 400, $titleFont, 0em),
+  $body-1: mat.m2-define-typography-level(14px, 20px, 400, $primaryFont, 0.0179em),
+  $body-2: mat.m2-define-typography-level(14px, 20px, 500, $primaryFont, 0.0179em),
+  $caption: mat.m2-define-typography-level(12px, 20px, 400, $primaryFont, 0.0333em),
+  $button: mat.m2-define-typography-level(inherit, 1.125, 400, $primaryFont, 1.5px),
+);
+@include mat.typography-hierarchy($typography-config);
+
+$mat-primary: (
+  main: purple,
+  lighter: #d7d3ee,
+  darker: #322966,
+  contrast: (
+    main: white,
+    lighter: white,
+    darker: white,
+  ),
+);
+
+
+$mat-accent: (
+  main: white,
+  lighter: #d7d3ee,
+  darker: #322966,
+  contrast: (
+    main: red,
+    lighter: white,
+    darker: white,
+  ),
+);
+
+$primary: mat.m2-define-palette($mat-primary, main, lighter, darker);
+$accent: mat.m2-define-palette($mat-accent, main, lighter, darker);
+
+$neightec-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $primary,
+    accent: $accent,
+  ),
+  density: -1,
+  typography: $typography-config,
+));
+
+@include mat.elevation-classes();
+@include mat.app-background();
+@include mat.all-component-themes($neightec-theme);

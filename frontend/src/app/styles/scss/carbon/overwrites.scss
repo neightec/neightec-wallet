@@ -1,0 +1,27 @@
+ibm-table-toolbar-search {
+  .bx--search-input {
+    height: 100% !important;
+  }
+
+  .bx--search-close {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+}
+
+.bx--date-picker {
+  width: 100%;
+}
+
+.bx--date-picker-container {
+  width: 100%;
+}
+
+.bx--date-picker.bx--date-picker--single .bx--date-picker__input {
+  width: 100%;
+}
+
+.bx--header {
+  border-bottom: 1px solid $headerColor;
+  background-color: $headerColor;
+}
