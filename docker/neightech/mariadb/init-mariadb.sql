@@ -1,4 +1,2 @@
--- TODO
-
 -- CREATE DATABASE IF NOT EXISTS `neight-mariadb`;
 -- GRANT ALL ON `neight-mariadb`.* TO 'neight'@'%';

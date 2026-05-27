@@ -14,21 +14,21 @@ spec:
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: neight-tech-wdd-dashboard-postgres
+  name: neightec-postgres
   namespace: neight
 spec:
   replicas: 1
-  serviceName: neight-tech-wdd-dashboard-postgres
+  serviceName: neightec-postgres
   selector:
     matchLabels:
-      app: neight-tech-wdd-dashboard-postgres
+      app: neightec-postgres
   template:
     metadata:
       labels:
-        app: neight-tech-wdd-dashboard-postgres
+        app: neightec-postgres
     spec:
       containers:
-        - name: neight-tech-wdd-dashboard-postgres
+        - name: neightec-postgres
           image: bitnami/postgresql:11.7.0
           env:
             - name: POSTGRESQL_PASSWORD
@@ -55,11 +55,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: neight-tech-wdd-dashboard-postgres
+  name: neightec-postgres
   namespace: neight
 spec:
   selector:
-    app: neight-tech-wdd-dashboard-postgres
+    app: neightec-postgres
   ports:
     - protocol: TCP
       port: 5432

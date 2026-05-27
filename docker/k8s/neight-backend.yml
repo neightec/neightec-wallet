@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: neight-tech-wdd-dashboard-backend
+  name: neightec-backend
   namespace: neight
 spec:
   type: LoadBalancer
@@ -10,30 +10,30 @@ spec:
     port: 8000
     targetPort: 8000
   selector:
-    neight-tech-wdd-dashboard.service: neight-tech-wdd-dashboard-backend
+    neightec.service: neightec-backend
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    neight-tech-wdd-dashboard.service: neight-tech-wdd-dashboard-backend
-  name: neight-tech-wdd-dashboard-backend
+    neightec.service: neightec-backend
+  name: neightec-backend
   namespace: neight
 spec:
   selector:
     matchLabels:
-      neight-tech-wdd-dashboard.service: neight-tech-wdd-dashboard-backend
+      neightec.service: neightec-backend
   replicas: 1
   strategy: {}
   template:
     metadata:
       labels:
-        neight-tech-wdd-dashboard.service: neight-tech-wdd-dashboard-backend
+        neightec.service: neightec-backend
     spec:
       containers:
-      - image: docker.io/nsuneightdocker/neight-tech-wdd-dashboard-backend:20230908-1911
+      - image: docker.io/nsuneightdocker/neightec-backend:20230908-1911
         imagePullPolicy: IfNotPresent
-        name: neight-tech-wdd-dashboard-backend
+        name: neightec-backend
         ports:
         - containerPort: 8000
         resources:
@@ -48,7 +48,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: neight-tech-wdd-dashboard-backend-ingress
+  name: neightec-backend-ingress
   namespace: neight
 spec:
   ingressClassName: nginx
@@ -63,6 +63,6 @@ spec:
         pathType: ImplementationSpecific
         backend:
           service:
-            name: neight-tech-wdd-dashboard-backend
+            name: neightec-backend
             port:
               number: 8000

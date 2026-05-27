@@ -1,0 +1,8 @@
+DROP DATABASE IF EXISTS neightec;
+CREATE DATABASE neightec;
+
+CREATE USER neightec WITH ENCRYPTED PASSWORD 'neightecpass' CREATEDB;
+GRANT ALL PRIVILEGES ON DATABASE neightec TO neightec;
+
+\c neightec;
+CREATE SCHEMA neightec AUTHORIZATION neightec;
