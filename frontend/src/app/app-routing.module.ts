@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { NeightecHomeComponent } from './component/neightec-home/neightec-home.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { DashboardPage } from './pages/dashboard/dashboard.page';
 
 const routes: Routes = 
 [
   { path: 'home',           component: NeightecHomeComponent  },
-  { path: 'dashboard',      component: DashboardComponent     },
+  { path: 'dashboard',      component: DashboardPage     },
   // { path: 'login',    component: NeightTechLoginComponent },
   // { path: '**',       component: NeightWeddingPagenotfoundComponent },    
   { path: '',         redirectTo: '/dashboard', pathMatch: 'full' }, //need to be declared before PageNotFound
