@@ -9,7 +9,7 @@
 @use '@angular/material' as mat;
 
 html {
-  color-scheme: light dark;
+  color-scheme: normal;
   @include mat.theme((
     color: mat.$violet-palette,
     typography: (

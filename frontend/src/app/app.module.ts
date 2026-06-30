@@ -123,10 +123,11 @@ export function initializeTranslation(translate: TranslateService) {
     DashboardOverviewComponent,
     RegisterGuestDialogComponent,
 
-    //new components base on angular
+    //new components based on angular
     NeightecHomeComponent,
     NeightecTableComponent,
     NeightecUploadListComponent,
+    // DashboardComponent
   ],
   bootstrap: [AppComponent], 
   imports: [
