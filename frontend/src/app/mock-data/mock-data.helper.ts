@@ -2,6 +2,30 @@ import { Guest } from "../models/guest.model";
 import { User } from "../models/user.model";
 
 export const mockGuests: Guest[] = [];
+export const mockDashboardPanels: any[] = [
+  {
+    id: 1,
+    title: 'Einnahmen',
+    revenue: '45678,00',
+    currency: '€',
+    change: '+20% month over month'
+  },
+  {
+    id: 2,
+    title: 'Ausgaben',
+    revenue: '45678,00',
+    currency: '€',
+    change: '-20% month over month'
+  },
+  {
+    id: 3,
+    title: 'Ersparnisse',
+    revenue: '45678,00',
+    currency: '€',
+    change: '+20% month over month'
+  }
+];
+
 const numGuests = 30; // Number of guests to generate
 
 for (let i = 0; i < numGuests; i++) {
