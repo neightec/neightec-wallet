@@ -1,20 +1,52 @@
-<mat-card class="example-card" appearance="outlined" *ngFor="let panel of panels">
-  <mat-card-header>
-    <mat-card-title>
-      {{ panel.title }}
-    </mat-card-title>
-    <mat-card-subtitle>
-      {{ panel.currency }} {{ panel.revenue }}
-    </mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    <p>
-      {{ panel.revenue }} {{ panel.currency }}
-    </p>
-  </mat-card-content>
-  <mat-card-content>
-    <p>
-      {{ panel.change }}
-    </p>
-  </mat-card-content>
-</mat-card>
+<div>
+  <mat-card class="dashboard-card" appearance="outlined" *ngFor="let panel of panels">
+    <mat-card-header>
+      <mat-card-title>
+        {{ panel.title }}
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{ panel.currency }} {{ panel.revenue }}
+      </mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>
+        {{ panel.revenue }} {{ panel.currency }}
+      </p>
+    </mat-card-content>
+    <mat-card-content>
+      <p>
+        {{ panel.change }}
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>
+<div>
+  <mat-card>
+    Bilanz
+  </mat-card>
+</div>
+<div>
+  <h1>Konten</h1>
+  <div>
+    <mat-card class="dashboard-card" appearance="outlined" *ngFor="let panel of accountPanels">
+      <mat-card-header>
+        <mat-card-title>
+          {{ panel.title }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          {{ panel.currency }} {{ panel.revenue }}
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>
+          {{ panel.revenue }} {{ panel.currency }}
+        </p>
+      </mat-card-content>
+      <mat-card-content>
+        <p>
+          {{ panel.change }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

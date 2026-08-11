@@ -26,6 +26,23 @@ export const mockDashboardPanels: any[] = [
   }
 ];
 
+export const mockDashboardAccountPanels: any[] = [
+  {
+    id: 1,
+    title: 'Deutsch Bank',
+    revenue: '45678,00',
+    currency: '€',
+    change: '+20% month over month'
+  },
+  {
+    id: 2,
+    title: 'ING Bank',
+    revenue: '45678,00',
+    currency: '€',
+    change: '-20% month over month'
+  }
+];
+
 const numGuests = 30; // Number of guests to generate
 
 for (let i = 0; i < numGuests; i++) {

@@ -1,13 +1,22 @@
 :host {
-  display: inline-flex;
-  
+  display: block;
+  width: 100%;
+
+  div {
+    display: inline-flex;
+    width: 100%;
+  }
 }
 
-.example-card {
-  max-width: 20rem;
+.dashboard-card {
+  min-width: 20rem;
+
+  &:not(:first-child) {
+    margin: 0 2rem;
+  }
 }
 
-.example-header-image {
-  background-image: url('https://material.angular.dev/assets/img/examples/shiba1.jpg');
-  background-size: cover;
-}
+// .example-header-image {
+//   background-image: url('https://material.angular.dev/assets/img/examples/shiba1.jpg');
+//   background-size: cover;
+// }

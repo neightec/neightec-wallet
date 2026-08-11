@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 
-import { mockDashboardPanels } from '../../mock-data/mock-data.helper';
+import { mockDashboardPanels, mockDashboardAccountPanels } from '../../mock-data/mock-data.helper';
 
 @Component({
   selector: 'neightec-dashboard',
@@ -16,15 +16,21 @@ import { mockDashboardPanels } from '../../mock-data/mock-data.helper';
 export class DashboardComponent implements OnInit {
 
   panels: any[] = [];
+  accountPanels: any[] = [];
   
   constructor() { }
   
   ngOnInit(): void {
     this.panels = this.fetchMockDashboardPanels();
+    this.accountPanels = this.fetchMockDashboardAccountPanels();
   }
 
   public fetchMockDashboardPanels(): any {
     return mockDashboardPanels;
+  }
+
+  public fetchMockDashboardAccountPanels(): any {
+    return mockDashboardAccountPanels;
   }
 
 }
