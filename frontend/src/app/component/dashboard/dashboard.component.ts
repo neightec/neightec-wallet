@@ -5,6 +5,10 @@ import { MatCardModule } from '@angular/material/card';
 import { Chart } from 'chart.js/auto';
 
 import { mockBilanzChartData, mockDashboardAccountPanels, mockDashboardPanels } from '../../mock-data/mock-data.helper';
+import { HttpClient } from '@angular/common/http';
+import { NeightApiService } from 'src/neight-api.service';
+import { WalletTransactionService } from 'src/app/services/wallet-transaction.service';
+import { WalletTransactionDTO } from 'src/app/dto/walletTransactionDTO';
 
 @Component({
   selector: 'neightec-dashboard',
@@ -22,11 +26,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   panels: any[] = [];
   accountPanels: any[] = [];
 
-  constructor() { }
+  constructor(
+    protected http: HttpClient,
+    protected neightApi: NeightApiService,
+    protected walletTransaction: WalletTransactionService,
+    ) {
+  }
 
   ngOnInit(): void {
     this.panels = this.fetchMockDashboardPanels();
     this.accountPanels = this.fetchMockDashboardAccountPanels();
+
+    this.fetchWalletTransaction().subscribe((transactions: WalletTransactionDTO[]) => {
+      console.error("test: ", transactions);
+    });
   }
 
   ngAfterViewInit(): void {
@@ -66,6 +79,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         maintainAspectRatio: false,
       },
     });
+  }
+
+  public fetchWalletTransaction(): any {
+    return this.walletTransaction.fetchAllWalletTransaction();
   }
 
 }
