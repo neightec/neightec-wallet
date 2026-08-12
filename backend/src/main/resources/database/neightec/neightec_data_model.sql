@@ -50,3 +50,17 @@ CREATE TABLE neightec.guest
     valid_start     TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT pk_guest PRIMARY KEY ( id )
 );
+
+--liquibase formatted sql
+--changeset nsu:4
+--comment: add new table for transaction
+DROP TABLE IF EXISTS neightec.transaction;
+
+CREATE TABLE neightec.transaction (
+	id uuid  NOT NULL,
+	name VARCHAR(50),
+	category_type VARCHAR(50),
+	price VARCHAR(50),
+	currency_type VARCHAR(50),
+	timestamp DATE
+);
