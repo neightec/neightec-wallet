@@ -54,13 +54,13 @@ CREATE TABLE neightec.guest
 --liquibase formatted sql
 --changeset nsu:4
 --comment: add new table for transaction
-DROP TABLE IF EXISTS neightec.transaction;
+DROP TABLE IF EXISTS neightec.wallet_transaction;
 
-CREATE TABLE neightec.transaction (
+CREATE TABLE neightec.wallet_transaction (
 	id uuid  NOT NULL,
 	name VARCHAR(50),
 	category_type VARCHAR(50),
 	price VARCHAR(50),
 	currency_type VARCHAR(50),
-	timestamp DATE
+	timestamp TIMESTAMP DEFAULT null
 );
