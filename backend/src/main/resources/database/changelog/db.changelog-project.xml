@@ -13,6 +13,7 @@
 
     <!-- core changelogs (mock)data -->
     <include file="classpath:database/neightec/transaction.sql"/>
+    <include file="classpath:database/neightec/wallet_transaction_model_data.sql"/>
 
     <!-- core deprecation changelogs /!\ use with caution -->
     <!--<include file="classpath:/db/changelog/db.changelog-deprecation-7.20.7-0.json"/>-->
