@@ -26,6 +26,7 @@ public class WalletTransactionController {
      */
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<WalletTransactionDTO>> getAllFiles() {
+        log.info("/wallet-transaction/all called!");
         return ResponseEntity.ok(walletTransactionService.getAll());
     }
 

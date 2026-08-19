@@ -59,15 +59,6 @@ DROP TABLE IF EXISTS neightec.wallet_transaction_type;
 DROP TABLE IF EXISTS neightec.wallet_transaction_currency;
 DROP TABLE IF EXISTS neightec.wallet_transaction_category;
 
-CREATE TABLE neightec.wallet_transaction (
-	id uuid  NOT NULL,
-	name VARCHAR(50),
-	category_type VARCHAR(50),
-	price VARCHAR(50),
-	currency_type VARCHAR(50),
-	timestamp TIMESTAMP DEFAULT null
-);
-
 CREATE TABLE neightec.wallet_transaction_currency (
 	id 						uuid  NOT NULL,
 	currency 			VARCHAR(50),
@@ -75,7 +66,7 @@ CREATE TABLE neightec.wallet_transaction_currency (
 );
 
 CREATE TABLE neightec.wallet_transaction_type (
-	id 		uuid  NOT NULL,
+	id 		uuid  NOT NULL PRIMARY KEY,
 	name 	VARCHAR(50)
 );
 
@@ -83,4 +74,14 @@ CREATE TABLE neightec.wallet_transaction_category (
 	id 		uuid  NOT NULL,
 	name 	VARCHAR(50),
 	icon 	VARCHAR(50)
+);
+
+CREATE TABLE neightec.wallet_transaction (
+	id uuid  NOT NULL,
+	name VARCHAR(50),
+	category_type VARCHAR(50),
+	price VARCHAR(50),
+	currency_type VARCHAR(50),
+	timestamp TIMESTAMP DEFAULT null,
+	wallet_transaction_type_id uuid NOT NULL REFERENCES neightec.wallet_transaction_type(id)
 );
