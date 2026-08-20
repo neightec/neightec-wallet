@@ -1,14 +1,12 @@
 package com.neightec.neightecavserver.controller;
 
 import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
-import com.neightec.neightecavserver.services.FileStorageService;
-import com.neightec.neightecavserver.services.WalletTransactionService;
+import com.neightec.neightecavserver.services.interfaces.WalletTransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,12 +20,23 @@ public class WalletTransactionController {
 
     /**
      * REST all wallet transactions
-     * @return boolean
+     * @return list of wallet transaction DTO
      */
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<WalletTransactionDTO>> getAllFiles() {
         log.info("/wallet-transaction/all called!");
         return ResponseEntity.ok(walletTransactionService.getAll());
+    }
+
+    /**
+     * REST all wallet transactions by typeEnum
+     * @return list of wallet transaction DTO
+     */
+    @GetMapping(value = "/get-by-transaction-type", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<WalletTransactionDTO>> getByTransactionType(
+            @RequestParam("typeEnum") String typeEnum) {
+        log.info("/get-by-transaction-type called with typeEnum={}", typeEnum);
+        return ResponseEntity.ok(walletTransactionService.getTransactionBalanceBalance(typeEnum));
     }
 
 }

@@ -14,10 +14,10 @@ import java.util.UUID;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="wallet_transaction")
+@Table(name="wallet_transaction_type")
 @Getter
 @Setter
-public class WalletTransaction {
+public class WalletTransactionType {
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -38,22 +38,4 @@ public class WalletTransaction {
     @Column(name = "name", length = 50)
     @JsonProperty
     private String name;
-
-    @Column(name = "category_type", length = 50)
-    @JsonProperty
-    private String category_type;
-
-    @Column(name = "price", length = 50)
-    @JsonProperty
-    private String price;
-
-    @Column(name = "currency_type", length = 50)
-    @JsonProperty
-    private String currency_type;
-
-    @Column(name="timestamp", nullable = false)
-    private Timestamp timestamp;
-
-    @Column(name="wallet_transaction_type_id", nullable = false)
-    private UUID wallet_transaction_type_id;
 }
