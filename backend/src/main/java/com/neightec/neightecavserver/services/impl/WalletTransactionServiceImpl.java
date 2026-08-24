@@ -10,6 +10,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,7 +30,7 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
     }
 
     @Override
-    public List<WalletTransactionDTO> getTransactionBalanceBalance(String typeEnum) {
+    public List<WalletTransactionDTO> getTransactionByType(String typeEnum) {
 
         WalletTransactionTypeEnum walletTransactionTypeEnum;
 
@@ -45,5 +46,10 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
                 .map(walletTransactionMapper::toDTO)
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public List<WalletTransactionDTO> getTransactionBalanceBySessionID(UUID sessionID) {
+        return List.of();
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/wallet-transaction")
@@ -32,11 +33,22 @@ public class WalletTransactionController {
      * REST all wallet transactions by typeEnum
      * @return list of wallet transaction DTO
      */
-    @GetMapping(value = "/get-by-transaction-type", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get-transaction-by-type", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<WalletTransactionDTO>> getByTransactionType(
             @RequestParam("typeEnum") String typeEnum) {
-        log.info("/get-by-transaction-type called with typeEnum={}", typeEnum);
-        return ResponseEntity.ok(walletTransactionService.getTransactionBalanceBalance(typeEnum));
+        log.info("/get-transaction-by-type called with typeEnum={}", typeEnum);
+        return ResponseEntity.ok(walletTransactionService.getTransactionByType(typeEnum));
+    }
+
+    /**
+     * REST all wallet transactions by typeEnum
+     * @return list of wallet transaction DTO
+     */
+    @GetMapping(value = "/get-transaction-balance", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<WalletTransactionDTO>> getTransactionBalance(
+            @RequestParam("sessionId") UUID sessionID) {
+        log.info("/get-transaction-balance called with sessionID={}", sessionID);
+        return ResponseEntity.ok(walletTransactionService.getTransactionBalanceBySessionID(sessionID));
     }
 
 }

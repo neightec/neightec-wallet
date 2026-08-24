@@ -80,8 +80,34 @@ CREATE TABLE neightec.wallet_transaction (
 	id uuid  NOT NULL,
 	name VARCHAR(50),
 	category_type VARCHAR(50),
-	price VARCHAR(50),
+	price NUMERIC(10,2),
 	currency_type VARCHAR(50),
 	timestamp TIMESTAMP DEFAULT null,
-	wallet_transaction_type_id uuid NOT NULL REFERENCES neightec.wallet_transaction_type(id)
+	wallet_transaction_type_id uuid NOT NULL REFERENCES neightec.wallet_transaction_type(id),
+    CONSTRAINT pk_wallet_transaction PRIMARY KEY (id)
+);
+
+--liquibase formatted sql
+--changeset nsu:5
+--comment: add new data models for wallet session, wallet user and wallet session user to transaction
+CREATE TABLE IF NOT EXISTS neightec.wallet_session (
+    id       		uuid  NOT NULL,
+    is_active		boolean DEFAULT false,
+    start_session   TIMESTAMP DEFAULT null,
+    end_session     TIMESTAMP DEFAULT null,
+    CONSTRAINT pk_wallet_session PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS neightec.wallet_user (
+    id 		    uuid NOT NULL,
+    username 		    VARCHAR(125) DEFAULT null,
+    wallet_session_id   uuid REFERENCES neightec.wallet_session(id),
+    CONSTRAINT pk_wallet_user PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS neightec.wallet_session_to_transaction (
+    id 		        uuid NOT NULL,
+    wallet_session_id 		uuid NOT NULL REFERENCES neightec.wallet_session(id),
+    wallet_transaction_id  uuid NOT NULL REFERENCES neightec.wallet_transaction(id),
+    CONSTRAINT pk_wallet_session_to_transaction PRIMARY KEY (id)
 );
