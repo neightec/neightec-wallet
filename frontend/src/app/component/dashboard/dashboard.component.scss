@@ -1,0 +1,25 @@
+:host {
+  display: block;
+  width: 100%;
+
+  div {
+    display: inline-flex;
+    width: 100%;
+    
+    &.dashboard-balance {
+      mat-card {
+        width: 100%;
+      }
+    }
+    
+    mat-card {
+      &.dashboard-card {
+        min-width: 20rem;
+      
+        &:not(:first-child) {
+          margin: 0 2rem;
+        }
+      }
+    }
+  }
+}

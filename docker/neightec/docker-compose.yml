@@ -66,12 +66,16 @@ services:
       context: ../../frontend
       dockerfile: ../frontend/.devcontainer/Dockerfile.dev
     working_dir: /workspace/frontend
-    command: sh -c "sleep infinity"
+    command: tail -f /dev/null
+    init: true
     mem_limit: 3g
     mem_reservation: 3g
     volumes:
       - ../../:/workspace:cached
-      - 'neightec-frontend-volume:/workspace/frontend/node_modules'
+      - /workspace/frontend/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
     networks:
       - neightec-dev-env
 
@@ -102,8 +106,6 @@ volumes:
     name: neightec-redis-data
   neightec-teedy-volume:
     name: neightec-teedy-data
-  neightec-frontend-volume:
-    name: neightec-frontend-data
   neightec-backend-cache:
     name: neightec-backend-data
     

@@ -2,6 +2,53 @@ import { Guest } from "../models/guest.model";
 import { User } from "../models/user.model";
 
 export const mockGuests: Guest[] = [];
+export const mockDashboardPanels: any[] = [
+  {
+    id: 1,
+    title: 'Einnahmen',
+    revenue: '45678,00',
+    currency: '€',
+    change: '+20% month over month'
+  },
+  {
+    id: 2,
+    title: 'Ausgaben',
+    revenue: '45678,00',
+    currency: '€',
+    change: '-20% month over month'
+  },
+  {
+    id: 3,
+    title: 'Ersparnisse',
+    revenue: '45678,00',
+    currency: '€',
+    change: '+20% month over month'
+  }
+];
+
+export const mockDashboardAccountPanels: any[] = [
+  {
+    id: 1,
+    title: 'Deutsch Bank',
+    revenue: '45678,00',
+    currency: '€',
+    change: '+20% month over month'
+  },
+  {
+    id: 2,
+    title: 'ING Bank',
+    revenue: '45678,00',
+    currency: '€',
+    change: '-20% month over month'
+  }
+];
+
+export const mockBilanzChartData = {
+  labels: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun'],
+  einnahmen: [4200, 4500, 4100, 4800, 5000, 4700],
+  ausgaben: [3100, 3300, 3600, 3200, 3400, 3000]
+};
+
 const numGuests = 30; // Number of guests to generate
 
 for (let i = 0; i < numGuests; i++) {

@@ -1,0 +1,54 @@
+--liquibase formatted sql
+--changeset nsu:0
+--comment: mock data - wallet session
+
+insert into wallet_session (id, is_active, start_session, end_session) values ('ab9ffbc0-4cf5-403c-9482-d57f50970651'::uuid, false, '2025-09-28 08:45:15', '2026-01-05 05:09:29');
+insert into wallet_session (id, is_active, start_session, end_session) values ('200bd09d-0749-45b8-a7f4-d09e32ab4cac'::uuid, false, '2026-08-08 00:28:16', '2026-06-16 04:18:41');
+insert into wallet_session (id, is_active, start_session, end_session) values ('3df15919-a1bc-412f-9822-3a91cadfa51e'::uuid, false, '2025-09-05 22:43:44', '2026-03-29 00:05:51');
+insert into wallet_session (id, is_active, start_session, end_session) values ('2cfd139f-4395-4908-9ec0-afe2d4c9f433'::uuid, false, '2026-03-29 08:02:57', '2025-09-28 21:06:53');
+insert into wallet_session (id, is_active, start_session, end_session) values ('6148de94-bad9-4c13-a351-158370657af4'::uuid, false, '2025-12-15 12:16:42', '2026-03-30 20:35:51');
+insert into wallet_session (id, is_active, start_session, end_session) values ('c75eba56-7bc4-4914-a667-0c5a4b8418f7'::uuid, false, '2025-10-12 01:39:44', '2026-01-07 10:56:17');
+insert into wallet_session (id, is_active, start_session, end_session) values ('cd6e1fe9-cbeb-4190-a0c6-b47557e42027'::uuid, false, '2025-08-30 23:10:26', '2026-05-26 08:37:51');
+insert into wallet_session (id, is_active, start_session, end_session) values ('65149039-e2da-44e2-a29d-173f9647f026'::uuid, false, '2026-01-11 15:44:57', '2025-11-02 16:31:44');
+insert into wallet_session (id, is_active, start_session, end_session) values ('ac48210a-a06b-4e0e-ae70-451611d6751d'::uuid, false, '2026-01-21 05:08:59', '2025-11-05 13:32:46');
+insert into wallet_session (id, is_active, start_session, end_session) values ('c807df45-74ed-415d-8ac8-33101899947b'::uuid, false, '2026-08-11 14:36:12', '2025-09-06 18:52:45');
+insert into wallet_session (id, is_active, start_session, end_session) values ('7a9f1cd7-3a61-4661-b538-b2225605aa24'::uuid, false, '2025-12-29 08:49:08', '2026-04-30 02:16:51');
+insert into wallet_session (id, is_active, start_session, end_session) values ('fbb0fe3f-6ed5-4993-b0b3-d86d749a9b41'::uuid, false, '2025-11-14 20:34:29', '2026-08-11 11:54:34');
+insert into wallet_session (id, is_active, start_session, end_session) values ('8fcb1aeb-4ea5-4603-82d7-56f69a1656ea'::uuid, false, '2026-02-05 00:20:00', '2026-01-18 17:34:50');
+insert into wallet_session (id, is_active, start_session, end_session) values ('2cbc1e12-5ad0-4e83-9d44-2067a21c0ecf'::uuid, false, '2026-01-02 11:45:39', '2026-04-06 18:08:55');
+insert into wallet_session (id, is_active, start_session, end_session) values ('9070c7cf-c949-4dda-9548-f38b140835ff'::uuid, false, '2026-03-06 01:25:14', '2026-04-20 04:28:00');
+insert into wallet_session (id, is_active, start_session, end_session) values ('0331fcc8-8e83-4534-8d00-56cf9c39db97'::uuid, false, '2026-02-16 04:00:33', '2026-05-12 02:37:20');
+insert into wallet_session (id, is_active, start_session, end_session) values ('66a77e4b-7e0f-4c32-b361-2375ba98fb6a'::uuid, false, '2025-11-05 08:04:28', '2026-01-24 06:36:32');
+insert into wallet_session (id, is_active, start_session, end_session) values ('0a3890f7-c942-4373-a2b4-f2d9845257c8'::uuid, false, '2026-01-31 18:08:03', '2026-05-19 00:52:43');
+insert into wallet_session (id, is_active, start_session, end_session) values ('de5f6f28-30a0-439a-abd2-dc429ed253dd'::uuid, false, '2025-12-18 20:28:49', '2026-02-24 00:36:40');
+insert into wallet_session (id, is_active, start_session, end_session) values ('4e910a85-0f3b-4a66-ad67-6d9d02155ad9'::uuid, false, '2025-09-23 22:28:06', '2025-09-15 08:26:36');
+insert into wallet_session (id, is_active, start_session, end_session) values ('0bdb112c-921d-4b85-b56f-cea52c0a5a15'::uuid, false, '2025-11-27 11:38:00', '2026-07-07 19:56:35');
+insert into wallet_session (id, is_active, start_session, end_session) values ('b09ff101-9004-4a3a-bc91-6338531c2372'::uuid, false, '2025-09-18 15:11:29', '2026-08-08 21:14:33');
+insert into wallet_session (id, is_active, start_session, end_session) values ('ea5f9be1-b56b-4af9-ab4b-3c1853074b3b'::uuid, false, '2026-04-25 05:48:25', '2026-03-05 10:58:23');
+insert into wallet_session (id, is_active, start_session, end_session) values ('fdb40528-0e66-46ae-86b0-4c82c6850520'::uuid, false, '2026-01-31 08:55:20', '2026-03-28 11:56:23');
+insert into wallet_session (id, is_active, start_session, end_session) values ('03e90513-0455-4b05-85ef-279f413afb37'::uuid, false, '2026-08-14 10:31:53', '2026-01-31 15:46:46');
+insert into wallet_session (id, is_active, start_session, end_session) values ('709ba869-3e9c-4dd7-8665-5bd94d6e08cb'::uuid, false, '2026-01-11 14:05:19', '2026-05-18 18:04:17');
+insert into wallet_session (id, is_active, start_session, end_session) values ('ace16cbd-db2f-4279-9120-b9e87fbaed47'::uuid, false, '2026-04-05 14:15:39', '2026-04-01 16:09:23');
+insert into wallet_session (id, is_active, start_session, end_session) values ('8c03a895-d723-41f0-ac85-27ac7bbdba6e'::uuid, false, '2026-04-26 21:00:17', '2026-07-02 17:43:05');
+insert into wallet_session (id, is_active, start_session, end_session) values ('833c0b74-032c-4247-8b14-34fbdd459817'::uuid, false, '2026-02-15 09:09:43', '2025-11-18 23:23:20');
+insert into wallet_session (id, is_active, start_session, end_session) values ('d8869f15-17f2-4148-9244-b496d5d4cf73'::uuid, false, '2026-06-18 11:26:32', '2026-04-08 11:38:15');
+insert into wallet_session (id, is_active, start_session, end_session) values ('5c82a4f5-f0ed-453b-924c-69e972b7b5ec'::uuid, false, '2025-12-26 02:13:13', '2026-08-16 02:48:33');
+insert into wallet_session (id, is_active, start_session, end_session) values ('9df48bab-f4a1-4203-8270-c47f0393f417'::uuid, false, '2026-07-08 12:25:08', '2026-08-17 21:54:27');
+insert into wallet_session (id, is_active, start_session, end_session) values ('ca08069a-6421-4a28-a83e-3889ed2422fc'::uuid, false, '2025-11-12 20:21:26', '2026-01-05 18:21:48');
+insert into wallet_session (id, is_active, start_session, end_session) values ('212ae24e-7b9f-4a16-83d2-d5438b130354'::uuid, false, '2026-04-09 20:05:08', '2025-09-09 16:29:03');
+insert into wallet_session (id, is_active, start_session, end_session) values ('8d29e946-717f-4d6e-ac3a-b6bb35c864f4'::uuid, false, '2025-12-26 01:41:32', '2025-11-02 06:25:00');
+insert into wallet_session (id, is_active, start_session, end_session) values ('84666dba-2469-4a74-a2c5-6caa6a62bbbe'::uuid, false, '2026-01-13 12:57:44', '2025-09-11 21:47:52');
+insert into wallet_session (id, is_active, start_session, end_session) values ('a82e07dc-596d-49df-a987-b462dc49397a'::uuid, false, '2026-04-28 05:29:05', '2025-12-29 19:42:32');
+insert into wallet_session (id, is_active, start_session, end_session) values ('76d98b95-59f8-44b2-a935-32843a6b7a82'::uuid, false, '2026-07-08 13:39:28', '2026-07-05 06:28:35');
+insert into wallet_session (id, is_active, start_session, end_session) values ('88ae5462-2394-4df9-a981-3d6e5cf19354'::uuid, false, '2026-07-12 06:32:34', '2025-11-08 11:00:14');
+insert into wallet_session (id, is_active, start_session, end_session) values ('09489897-37f1-4a89-9cfd-afbb65f1cb4b'::uuid, false, '2025-12-04 13:48:48', '2025-12-09 04:23:07');
+insert into wallet_session (id, is_active, start_session, end_session) values ('978da733-e24e-4b8e-9cd9-cdd237dcaf8b'::uuid, false, '2026-02-20 15:13:42', '2025-09-30 15:26:52');
+insert into wallet_session (id, is_active, start_session, end_session) values ('6700b3c4-caf9-4d86-9c71-ffb5b2ef79f6'::uuid, false, '2026-01-02 20:04:39', '2026-03-06 23:28:44');
+insert into wallet_session (id, is_active, start_session, end_session) values ('e4c8c17f-e744-486f-abe9-35d193d74feb'::uuid, false, '2025-12-27 08:34:16', '2025-09-15 18:41:01');
+insert into wallet_session (id, is_active, start_session, end_session) values ('a6e3f4b8-1c4b-4ab4-9578-f6eb860e73dd'::uuid, false, '2026-07-24 11:39:37', '2026-08-14 12:54:24');
+insert into wallet_session (id, is_active, start_session, end_session) values ('9b2d9088-a967-4c81-8218-1d92cf35d0a9'::uuid, false, '2026-01-29 18:26:38', '2026-04-08 13:56:56');
+insert into wallet_session (id, is_active, start_session, end_session) values ('4d62e9a9-d981-41c6-aa22-cc1f78b8d3f8'::uuid, false, '2025-10-20 17:41:34', '2026-01-11 22:15:08');
+insert into wallet_session (id, is_active, start_session, end_session) values ('ba7dcc7e-4100-4e9a-bc17-20a5fbf36567'::uuid, false, '2025-10-20 04:51:59', '2025-10-09 21:33:14');
+insert into wallet_session (id, is_active, start_session, end_session) values ('4f506af5-5044-41df-9125-f456e9965698'::uuid, false, '2025-08-28 06:55:24', '2026-04-05 21:30:43');
+insert into wallet_session (id, is_active, start_session, end_session) values ('eac5d5e3-14eb-4f69-9b15-edbc5b1f6cbb'::uuid, true, '2026-05-16 05:22:34', null);
+insert into wallet_session (id, is_active, start_session, end_session) values ('f40f1143-067a-43a5-870f-dde93ef2f069'::uuid, true, '2026-05-08 06:05:31', null);
