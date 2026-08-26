@@ -1,7 +1,10 @@
 package com.neightec.neightecavserver.services.impl;
 
+import com.neightec.neightecavserver.config.WalletConfig;
 import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
 import com.neightec.neightecavserver.models.enums.WalletTransactionTypeEnum;
+import com.neightec.neightecavserver.models.neightec_data.WalletSession;
+import com.neightec.neightecavserver.repositories.interfaces.WalletSessionRepository;
 import com.neightec.neightecavserver.repositories.interfaces.WalletTransactionRepository;
 import com.neightec.neightecavserver.services.interfaces.WalletTransactionService;
 import com.neightec.neightecavserver.services.mapper.WalletTransactionMapper;
@@ -20,6 +23,8 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
 
     private final WalletTransactionRepository walletTransactionRepository;
     private final WalletTransactionMapper walletTransactionMapper;
+    private final WalletConfig walletConfig; // TODO use this
+    private final WalletSessionRepository walletSessionRepository;
 
     @Override
     public List<WalletTransactionDTO> getAll() {
@@ -50,6 +55,16 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
 
     @Override
     public List<WalletTransactionDTO> getTransactionBalanceBySessionID(UUID sessionID) {
-        return List.of();
+        WalletSession session = walletSessionRepository.findById(sessionID).orElse(null);
+
+        if (session == null) {
+            log.error("Wallet session not found for session ID: {}", sessionID);
+            return List.of();
+        }
+
+        return walletTransactionRepository.findTransactionBySessionId(sessionID)
+                .stream()
+                .map(walletTransactionMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

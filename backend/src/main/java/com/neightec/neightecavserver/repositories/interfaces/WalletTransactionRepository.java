@@ -21,4 +21,15 @@ public interface WalletTransactionRepository extends JpaRepository<WalletTransac
             where wtt.name = :#{#typeEnum.walletTransactionTypeName}
             """, nativeQuery = true)
     List<WalletTransaction> findTransactionByType(@Param("typeEnum") WalletTransactionTypeEnum typeEnum);
+
+    @Query(value = """
+            select wt.*\s
+            from wallet_transaction wt
+            join wallet_session_to_transaction wstt
+                on wt.id = wstt.wallet_transaction_id
+            where wstt.wallet_session_id = :sessionId
+           \s""", nativeQuery = true)
+    List<WalletTransaction> findTransactionBySessionId(@Param("sessionId") UUID sessionID);
+
+
 }

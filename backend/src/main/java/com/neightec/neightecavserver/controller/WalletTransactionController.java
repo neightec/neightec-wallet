@@ -42,6 +42,7 @@ public class WalletTransactionController {
 
     /**
      * REST all wallet transactions by typeEnum
+     * api to get dto values for charts
      * @return list of wallet transaction DTO
      */
     @GetMapping(value = "/get-transaction-balance", produces = MediaType.APPLICATION_JSON_VALUE)
