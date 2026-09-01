@@ -49,7 +49,7 @@ public class WalletTransactionController {
     public ResponseEntity<List<WalletTransactionDTO>> getTransactionBalance(
             @RequestParam("sessionId") UUID sessionID) {
         log.info("/get-transaction-balance called with sessionID={}", sessionID);
-        return ResponseEntity.ok(walletTransactionService.getTransactionBalanceBySessionID(sessionID));
+        return ResponseEntity.ok(walletTransactionService.getTransactionBalanceBySessionIDAndWalletTransactionType(sessionID));
     }
 
 }

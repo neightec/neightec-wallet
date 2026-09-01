@@ -13,4 +13,5 @@ public interface WalletTransactionService {
     List<WalletTransactionDTO> getAll();
     List<WalletTransactionDTO> getTransactionByType(String typeEnum);
     List<WalletTransactionDTO> getTransactionBalanceBySessionID(UUID sessionID);
+    List<WalletTransactionDTO> getTransactionBalanceBySessionIDAndWalletTransactionType(UUID sessionID);
 }

@@ -1,6 +1,7 @@
 package com.neightec.neightecavserver.services.impl;
 
 import com.neightec.neightecavserver.config.WalletConfig;
+import com.neightec.neightecavserver.models.dto.WalletTransactionBalanceDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
 import com.neightec.neightecavserver.models.enums.WalletTransactionTypeEnum;
 import com.neightec.neightecavserver.models.neightec_data.WalletSession;
@@ -65,6 +66,25 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
         return walletTransactionRepository.findTransactionBySessionId(sessionID)
                 .stream()
                 .map(walletTransactionMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<WalletTransactionDTO> getTransactionBalanceBySessionIDAndWalletTransactionType(UUID sessionID) {
+        WalletSession session = walletSessionRepository.findById(sessionID).orElse(null);
+
+        if (session == null) {
+            log.error("Wallet session not found for session ID: {}", sessionID);
+            return List.of();
+        }
+
+        return walletTransactionRepository.findTransactionBySessionIdAndWalletTransactionType(sessionID)
+                .stream()
+                .map(balance -> new WalletTransactionDTO(
+                        balance.getName(),
+                        null,
+                        balance.getTotal(),
+                        balance.getCurrency_type()))
                 .collect(Collectors.toList());
     }
 }
