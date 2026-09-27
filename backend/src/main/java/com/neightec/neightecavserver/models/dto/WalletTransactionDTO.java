@@ -11,4 +11,5 @@ public class WalletTransactionDTO {
     private String category_type;
     private BigDecimal price;
     private String currency_type;
+    private String month;
 }

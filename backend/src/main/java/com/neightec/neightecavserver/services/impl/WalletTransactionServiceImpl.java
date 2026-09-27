@@ -84,7 +84,8 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
                         balance.getName(),
                         null,
                         balance.getTotal(),
-                        balance.getCurrency_type()))
+                        balance.getCurrency_type(),
+                        balance.getMonth()))
                 .collect(Collectors.toList());
     }
 }

@@ -34,14 +34,14 @@ public interface WalletTransactionRepository extends JpaRepository<WalletTransac
 
     //TODO with month
     @Query(value = """
-            select wtt.name as name, wt.currency_type as currency_type, sum(wt.price) as total
+            select wtt.name as name, wt.currency_type as currency_type, sum(wt.price) as total, to_char(wt."timestamp", 'Month') as month
             from wallet_transaction wt
             join wallet_session_to_transaction wstt
                 on wt.id = wstt.wallet_transaction_id
             join wallet_transaction_type wtt
                 on wtt.id = wt.wallet_transaction_type_id
             where wstt.wallet_session_id = :sessionId
-            group by wtt.name, wt.currency_type
+            group by wtt.name, wt.currency_type, wt."timestamp"
            \s""", nativeQuery = true)
     List<WalletTransactionBalanceByType> findTransactionBySessionIdAndWalletTransactionType(@Param("sessionId") UUID sessionID);
 
@@ -49,11 +49,11 @@ public interface WalletTransactionRepository extends JpaRepository<WalletTransac
      * Aggregate projection: total price per wallet transaction type.
      * This query returns no entity rows, so it must not be mapped to WalletTransaction.
      */
-    BigDecimal getTotal();
     interface WalletTransactionBalanceByType {
         String getName();
+        BigDecimal getTotal();
         String getCurrency_type();
-        //TODO with month
+        String getMonth();
     }
 
 }
