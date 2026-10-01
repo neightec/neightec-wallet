@@ -40,13 +40,15 @@ public class WalletTransactionControllerTest {
                         "Salary",
                         "INCOME",
                         BigDecimal.valueOf(2500.00),
-                        "EUR"
+                        "EUR",
+                        "November"
                 ),
                 new WalletTransactionDTO(
                         "Groceries",
                         "FOOD",
                         BigDecimal.valueOf(45.99),
-                        "EUR"
+                        "EUR",
+                        "Dezember"
                 )
         );
 
@@ -78,7 +80,8 @@ public class WalletTransactionControllerTest {
                         "Salary",
                         "WORK",
                         BigDecimal.valueOf(2500.00),
-                        "EUR"
+                        "EUR",
+                        "Dezember"
                 )
         );
 
@@ -107,13 +110,15 @@ public class WalletTransactionControllerTest {
                         "Coffee",
                         "FOOD",
                         BigDecimal.valueOf(3.50),
-                        "EUR"
+                        "EUR",
+                        "Dezember"
                 ),
                 new WalletTransactionDTO(
                         "Bus Ticket",
                         "TRANSPORT",
                         BigDecimal.valueOf(2.90),
-                        "EUR"
+                        "EUR",
+                        "Dezember"
                 )
         );
 
