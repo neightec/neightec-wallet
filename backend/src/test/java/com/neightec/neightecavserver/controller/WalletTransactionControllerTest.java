@@ -41,14 +41,16 @@ public class WalletTransactionControllerTest {
                         "INCOME",
                         BigDecimal.valueOf(2500.00),
                         "EUR",
-                        "November"
+                        "November",
+                        "2027"
                 ),
                 new WalletTransactionDTO(
                         "Groceries",
                         "FOOD",
                         BigDecimal.valueOf(45.99),
                         "EUR",
-                        "Dezember"
+                        "Dezember",
+                        "2027"
                 )
         );
 
@@ -81,7 +83,8 @@ public class WalletTransactionControllerTest {
                         "WORK",
                         BigDecimal.valueOf(2500.00),
                         "EUR",
-                        "Dezember"
+                        "Dezember",
+                        "2027"
                 )
         );
 
@@ -111,18 +114,20 @@ public class WalletTransactionControllerTest {
                         "FOOD",
                         BigDecimal.valueOf(3.50),
                         "EUR",
-                        "Dezember"
+                        "Dezember",
+                        "2027"
                 ),
                 new WalletTransactionDTO(
                         "Bus Ticket",
                         "TRANSPORT",
                         BigDecimal.valueOf(2.90),
                         "EUR",
-                        "Dezember"
+                        "Dezember",
+                        "2027"
                 )
         );
 
-        when(walletTransactionService.getTransactionBalanceBySessionID(sessionId)).thenReturn(transactions);
+        when(walletTransactionService.getTransactionBalanceBySessionIDAndWalletTransactionType(sessionId)).thenReturn(transactions);
 
         mockMvc.perform(get("/wallet-transaction/get-transaction-balance")
                         .param("sessionId", sessionId.toString())
@@ -139,7 +144,7 @@ public class WalletTransactionControllerTest {
                 .andExpect(jsonPath("$[1].price").value(2.90))
                 .andExpect(jsonPath("$[1].currency_type").value("EUR"));
 
-        verify(walletTransactionService).getTransactionBalanceBySessionID(sessionId);
+        verify(walletTransactionService).getTransactionBalanceBySessionIDAndWalletTransactionType(sessionId);
     }
 
     @Test

@@ -5,6 +5,7 @@ import com.neightec.neightecavserver.models.dto.WalletTransactionBalanceDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
 import com.neightec.neightecavserver.models.enums.WalletTransactionTypeEnum;
 import com.neightec.neightecavserver.models.neightec_data.WalletSession;
+import com.neightec.neightecavserver.models.neightec_data.WalletTransaction;
 import com.neightec.neightecavserver.repositories.interfaces.WalletSessionRepository;
 import com.neightec.neightecavserver.repositories.interfaces.WalletTransactionRepository;
 import com.neightec.neightecavserver.services.interfaces.WalletTransactionService;
@@ -13,7 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -78,14 +81,23 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
             return List.of();
         }
 
-        return walletTransactionRepository.findTransactionBySessionIdAndWalletTransactionType(sessionID)
+        List<WalletTransactionDTO> transactions = walletTransactionRepository.findTransactionBySessionIdAndWalletTransactionType(sessionID)
                 .stream()
                 .map(balance -> new WalletTransactionDTO(
                         balance.getName(),
                         null,
                         balance.getTotal(),
                         balance.getCurrency_type(),
-                        balance.getMonth()))
+                        balance.getMonth(),
+                        balance.getYear()))
                 .collect(Collectors.toList());
+
+        if (transactions.isEmpty()) {
+            return List.of();
+        }
+
+        Map<String, List<WalletTransactionRepository.WalletTransactionBalanceByType>> mapPricing = new HashMap<>();
+
+        return transactions;
     }
 }

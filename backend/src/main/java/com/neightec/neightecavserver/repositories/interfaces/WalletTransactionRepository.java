@@ -32,17 +32,24 @@ public interface WalletTransactionRepository extends JpaRepository<WalletTransac
            \s""", nativeQuery = true)
     List<WalletTransaction> findTransactionBySessionId(@Param("sessionId") UUID sessionID);
 
-    //TODO with month
     @Query(value = """
-            select wtt.name as name, wt.currency_type as currency_type, sum(wt.price) as total, to_char(wt."timestamp", 'Month') as month
+            select wtt.name as name,
+                   wt.currency_type as currency_type,
+                   sum(wt.price) as total,
+                   to_char(date_trunc('month', wt."timestamp"), 'FMMonth') as month,
+                   to_char(date_trunc('month', wt."timestamp"), 'YYYY') as year
             from wallet_transaction wt
             join wallet_session_to_transaction wstt
                 on wt.id = wstt.wallet_transaction_id
             join wallet_transaction_type wtt
                 on wtt.id = wt.wallet_transaction_type_id
             where wstt.wallet_session_id = :sessionId
-            group by wtt.name, wt.currency_type, wt."timestamp"
-           \s""", nativeQuery = true)
+            group by wtt.name, wt.currency_type, date_trunc('month', wt."timestamp")
+            order by date_trunc('month', wt."timestamp"), name
+            """, nativeQuery = true)
+    // TODO add extra clausal group Einnahmen and year
+    // compare with the last month of the group (Einnahmen)
+    // i.e. january 2026 -> 2000 €, compare with the einnahmen with february 2026 1500 €
     List<WalletTransactionBalanceByType> findTransactionBySessionIdAndWalletTransactionType(@Param("sessionId") UUID sessionID);
 
     /**
@@ -54,6 +61,8 @@ public interface WalletTransactionRepository extends JpaRepository<WalletTransac
         BigDecimal getTotal();
         String getCurrency_type();
         String getMonth();
+        String getYear();
+        String getMonth_year();
     }
 
 }

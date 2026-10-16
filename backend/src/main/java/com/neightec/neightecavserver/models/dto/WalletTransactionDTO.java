@@ -12,4 +12,5 @@ public class WalletTransactionDTO {
     private BigDecimal price;
     private String currency_type;
     private String month;
+    private String year;
 }
