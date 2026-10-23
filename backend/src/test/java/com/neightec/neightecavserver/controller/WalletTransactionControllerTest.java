@@ -1,6 +1,8 @@
 package com.neightec.neightecavserver.controller;
 
 import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
+import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceDTO;
+import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceSummaryDTO;
 import com.neightec.neightecavserver.services.interfaces.WalletTransactionService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,46 +107,34 @@ public class WalletTransactionControllerTest {
     }
 
     @Test
-    void getTransactionBalance_shouldReturnWalletTransactionsBySessionId() throws Exception {
+    void getTransactionBalance_shouldReturnMonthlyComparisonAndMaxMonth() throws Exception {
         UUID sessionId = UUID.fromString("11111111-1111-1111-1111-111111111111");
 
-        List<WalletTransactionDTO> transactions = List.of(
-                new WalletTransactionDTO(
-                        "Coffee",
-                        "FOOD",
-                        BigDecimal.valueOf(3.50),
-                        "EUR",
-                        "Dezember",
-                        "2027"
-                ),
-                new WalletTransactionDTO(
-                        "Bus Ticket",
-                        "TRANSPORT",
-                        BigDecimal.valueOf(2.90),
-                        "EUR",
-                        "Dezember",
-                        "2027"
-                )
-        );
+        WalletTransactionMonthlyBalanceDTO november = new WalletTransactionMonthlyBalanceDTO(
+                "Einnahmen", BigDecimal.valueOf(1000), "EUR", "November", "2026", null, null);
+        WalletTransactionMonthlyBalanceDTO december = new WalletTransactionMonthlyBalanceDTO(
+                "Einnahmen", BigDecimal.valueOf(1020), "EUR", "December", "2026",
+                BigDecimal.valueOf(20), new BigDecimal("2.00"));
 
-        when(walletTransactionService.getTransactionBalanceBySessionIDAndWalletTransactionType(sessionId)).thenReturn(transactions);
+        when(walletTransactionService.getTransactionBalanceBySessionIDAndWalletTransactionType(sessionId, "Einnahmen"))
+                .thenReturn(new WalletTransactionMonthlyBalanceSummaryDTO(List.of(november, december), december));
 
         mockMvc.perform(get("/wallet-transaction/get-transaction-balance")
                         .param("sessionId", sessionId.toString())
+                        .param("transactionType", "Einnahmen")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].name").value("Coffee"))
-                .andExpect(jsonPath("$[0].category_type").value("FOOD"))
-                .andExpect(jsonPath("$[0].price").value(3.50))
-                .andExpect(jsonPath("$[0].currency_type").value("EUR"))
-                .andExpect(jsonPath("$[1].name").value("Bus Ticket"))
-                .andExpect(jsonPath("$[1].category_type").value("TRANSPORT"))
-                .andExpect(jsonPath("$[1].price").value(2.90))
-                .andExpect(jsonPath("$[1].currency_type").value("EUR"));
+                .andExpect(jsonPath("$.months", hasSize(2)))
+                .andExpect(jsonPath("$.months[0].total").value(1000))
+                .andExpect(jsonPath("$.months[0].difference").doesNotExist())
+                .andExpect(jsonPath("$.months[0].percentage_change").doesNotExist())
+                .andExpect(jsonPath("$.months[1].difference").value(20))
+                .andExpect(jsonPath("$.months[1].percentage_change").value(2.00))
+                .andExpect(jsonPath("$.max_month.month").value("December"))
+                .andExpect(jsonPath("$.max_month.total").value(1020));
 
-        verify(walletTransactionService).getTransactionBalanceBySessionIDAndWalletTransactionType(sessionId);
+        verify(walletTransactionService).getTransactionBalanceBySessionIDAndWalletTransactionType(sessionId, "Einnahmen");
     }
 
     @Test

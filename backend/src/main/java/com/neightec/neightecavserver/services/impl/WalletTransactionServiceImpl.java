@@ -1,7 +1,8 @@
 package com.neightec.neightecavserver.services.impl;
 
 import com.neightec.neightecavserver.config.WalletConfig;
-import com.neightec.neightecavserver.models.dto.WalletTransactionBalanceDTO;
+import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceDTO;
+import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceSummaryDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
 import com.neightec.neightecavserver.models.enums.WalletTransactionTypeEnum;
 import com.neightec.neightecavserver.models.neightec_data.WalletSession;
@@ -14,9 +15,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -73,31 +73,30 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
     }
 
     @Override
-    public List<WalletTransactionDTO> getTransactionBalanceBySessionIDAndWalletTransactionType(UUID sessionID) {
+    public WalletTransactionMonthlyBalanceSummaryDTO getTransactionBalanceBySessionIDAndWalletTransactionType(UUID sessionID, String transactionType) {
         WalletSession session = walletSessionRepository.findById(sessionID).orElse(null);
 
         if (session == null) {
             log.error("Wallet session not found for session ID: {}", sessionID);
-            return List.of();
+            return new WalletTransactionMonthlyBalanceSummaryDTO(List.of(), null);
         }
 
-        List<WalletTransactionDTO> transactions = walletTransactionRepository.findTransactionBySessionIdAndWalletTransactionType(sessionID)
+        List<WalletTransactionMonthlyBalanceDTO> months = walletTransactionRepository.findTransactionBySessionIdAndWalletTransactionType(sessionID, transactionType)
                 .stream()
-                .map(balance -> new WalletTransactionDTO(
+                .map(balance -> new WalletTransactionMonthlyBalanceDTO(
                         balance.getName(),
-                        null,
                         balance.getTotal(),
                         balance.getCurrency_type(),
                         balance.getMonth(),
-                        balance.getYear()))
+                        balance.getYear(),
+                        balance.getDifference(),
+                        balance.getPercentage_change()))
                 .collect(Collectors.toList());
 
-        if (transactions.isEmpty()) {
-            return List.of();
-        }
+        WalletTransactionMonthlyBalanceDTO maxMonth = months.stream()
+                .max(Comparator.comparing(WalletTransactionMonthlyBalanceDTO::getTotal))
+                .orElse(null);
 
-        Map<String, List<WalletTransactionRepository.WalletTransactionBalanceByType>> mapPricing = new HashMap<>();
-
-        return transactions;
+        return new WalletTransactionMonthlyBalanceSummaryDTO(months, maxMonth);
     }
 }
