@@ -1,6 +1,7 @@
 package com.neightec.neightecavserver.controller;
 
 import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
+import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceSummaryDTO;
 import com.neightec.neightecavserver.services.interfaces.WalletTransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -42,13 +43,16 @@ public class WalletTransactionController {
 
     /**
      * REST all wallet transactions by typeEnum
+     * api to get dto values for charts
      * @return list of wallet transaction DTO
      */
     @GetMapping(value = "/get-transaction-balance", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<WalletTransactionDTO>> getTransactionBalance(
-            @RequestParam("sessionId") UUID sessionID) {
-        log.info("/get-transaction-balance called with sessionID={}", sessionID);
-        return ResponseEntity.ok(walletTransactionService.getTransactionBalanceBySessionID(sessionID));
+    public ResponseEntity<WalletTransactionMonthlyBalanceSummaryDTO> getTransactionBalance(
+            @RequestParam("sessionId") UUID sessionID,
+            @RequestParam("transactionType") String transactionType
+    ) {
+        log.info("/get-transaction-balance called with sessionID={}, transactionType={}", sessionID, transactionType);
+        return ResponseEntity.ok(walletTransactionService.getTransactionBalanceBySessionIDAndWalletTransactionType(sessionID, transactionType));
     }
 
 }
