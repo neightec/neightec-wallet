@@ -6,7 +6,6 @@ import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceS
 import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
 import com.neightec.neightecavserver.models.enums.WalletTransactionTypeEnum;
 import com.neightec.neightecavserver.models.neightec_data.WalletSession;
-import com.neightec.neightecavserver.models.neightec_data.WalletTransaction;
 import com.neightec.neightecavserver.repositories.interfaces.WalletSessionRepository;
 import com.neightec.neightecavserver.repositories.interfaces.WalletTransactionRepository;
 import com.neightec.neightecavserver.services.interfaces.WalletTransactionService;
@@ -15,10 +14,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.neightec.neightecavserver.models.enums.WalletTransactionTypeEnum.*;
 
 @Service
 @RequiredArgsConstructor
@@ -98,5 +98,77 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
                 .orElse(null);
 
         return new WalletTransactionMonthlyBalanceSummaryDTO(months, maxMonth);
+    }
+
+    @Override
+    public Object getTransactionBalanceBySessionIDAndWallet(UUID sessionID) {
+        WalletSession session = walletSessionRepository.findById(sessionID).orElse(null);
+
+        if (session == null) {
+            log.error("Wallet session not found for session ID: {}", sessionID);
+            return null;
+        }
+
+        Map<String, BigDecimal> einnahmenByMonth = new LinkedHashMap<>();
+        Map<String, BigDecimal> ausgabenByMonth = new LinkedHashMap<>();
+        Map<String, BigDecimal> ersparnisseByMonth = new LinkedHashMap<>();
+
+        walletTransactionRepository.findTransactionBySessionIdAndWallet(sessionID)
+            .forEach(tb -> {
+                if (tb == null) {
+                    return;
+                }
+
+                String monthLabel = tb.getMonth() + " " + tb.getYear();
+
+                einnahmenByMonth.putIfAbsent(monthLabel, BigDecimal.ZERO);
+                ausgabenByMonth.putIfAbsent(monthLabel, BigDecimal.ZERO);
+                ersparnisseByMonth.putIfAbsent(monthLabel, BigDecimal.ZERO);
+
+                if (EINKOMMEN.getWalletTransactionTypeName().equals(tb.getName())) {
+                    einnahmenByMonth.put(monthLabel, tb.getTotal());
+                }
+
+                if (AUSGABE.getWalletTransactionTypeName().equals(tb.getName())) {
+                    ausgabenByMonth.put(monthLabel, tb.getTotal());
+                }
+
+                if (ERSPARNIS.getWalletTransactionTypeName().equals(tb.getName())) {
+                    ersparnisseByMonth.put(monthLabel, tb.getTotal());
+                }
+            });
+
+        List<String> monthLabels = new LinkedList<>(einnahmenByMonth.keySet());
+        List<BigDecimal> einnahmenList = new LinkedList<>(einnahmenByMonth.values());
+        List<BigDecimal> ausgabenList = new LinkedList<>(ausgabenByMonth.values());
+        List<BigDecimal> erspanisseList = new LinkedList<>(ersparnisseByMonth.values());
+
+        log.info("test einnahmen: ", einnahmenList);
+        log.info("test ausgabenList: ", ausgabenList);
+        log.info("test ausgabenList: ", erspanisseList);
+
+        WalletTransactionRepository.WalletTransactionBalance wtb = new WalletTransactionRepository.WalletTransactionBalance() {
+            @Override
+            public List<String> getName() {
+                return monthLabels;
+            }
+
+            @Override
+            public List<BigDecimal> einnahmen() {
+                return einnahmenList;
+            }
+
+            @Override
+            public List<BigDecimal> ausgaben() {
+                return ausgabenList;
+            }
+
+            @Override
+            public List<BigDecimal> ersparnisse() {
+                return erspanisseList;
+            }
+        };
+
+        return wtb;
     }
 }

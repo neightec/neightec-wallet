@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.neightec</groupId>
-	<artifactId>neightec-av-server</artifactId>
+	<artifactId>neightec-server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>neightec-av-server</name>
-	<description>Neight Tec AV Server</description>
+	<name>neightec-server</name>
+	<description>Neightec Server</description>
 	<properties>
 		<java.version>17</java.version>
 		<liquibase.version>4.20.0</liquibase.version>
@@ -148,7 +148,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
-					<mainClass>com.neightec.neightecavserver.NeightTecAvServerApplication</mainClass>
+					<mainClass>com.neightec.neightecavserver.NeightecServerApplication</mainClass>
 					<classifier>exec</classifier>
 					<includeSystemScope>true</includeSystemScope>
 					<!-- This will be used for remote debugging -->

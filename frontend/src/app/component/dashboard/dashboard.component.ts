@@ -71,6 +71,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             data: mockBilanzChartData.ausgaben,
             borderColor: '#a37b78',
             backgroundColor: '#39040133',
+          },{
+            label: 'Ersparnisse',
+            data: mockBilanzChartData.ersparnisse,
+            borderColor: '#220604',
+            backgroundColor: '#59221f33',
           },
         ],
       },
