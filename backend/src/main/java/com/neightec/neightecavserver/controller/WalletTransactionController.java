@@ -1,5 +1,6 @@
 package com.neightec.neightecavserver.controller;
 
+import com.neightec.neightecavserver.models.dto.WalletTransactionChartDataDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceSummaryDTO;
@@ -63,7 +64,7 @@ public class WalletTransactionController {
      * @return list of wallet transaction DTO
      */
     @GetMapping(value = "/get-transaction-balance-chart", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getTransactionBalanceChart(
+    public ResponseEntity<WalletTransactionChartDataDTO> getTransactionBalanceChart(
             @RequestParam("sessionId") UUID sessionID
     ) {
         log.info("/get-transaction-balance-chart called with sessionID={}", sessionID);

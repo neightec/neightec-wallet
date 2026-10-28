@@ -116,12 +116,4 @@ public interface WalletTransactionRepository extends JpaRepository<WalletTransac
         BigDecimal getDifference();
         BigDecimal getPercentage_change();
     }
-
-    interface WalletTransactionBalance {
-        List<String> getName();
-        List<BigDecimal> einnahmen();
-        List<BigDecimal> ausgaben();
-        List<BigDecimal> ersparnisse();
-    }
-
 }

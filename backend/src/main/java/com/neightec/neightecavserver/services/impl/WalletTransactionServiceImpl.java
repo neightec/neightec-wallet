@@ -1,6 +1,7 @@
 package com.neightec.neightecavserver.services.impl;
 
 import com.neightec.neightecavserver.config.WalletConfig;
+import com.neightec.neightecavserver.models.dto.WalletTransactionChartDataDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceSummaryDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
@@ -101,7 +102,7 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
     }
 
     @Override
-    public Object getTransactionBalanceBySessionIDAndWallet(UUID sessionID) {
+    public WalletTransactionChartDataDTO getTransactionBalanceBySessionIDAndWallet(UUID sessionID) {
         WalletSession session = walletSessionRepository.findById(sessionID).orElse(null);
 
         if (session == null) {
@@ -113,62 +114,41 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
         Map<String, BigDecimal> ausgabenByMonth = new LinkedHashMap<>();
         Map<String, BigDecimal> ersparnisseByMonth = new LinkedHashMap<>();
 
-        walletTransactionRepository.findTransactionBySessionIdAndWallet(sessionID)
-            .forEach(tb -> {
-                if (tb == null) {
-                    return;
-                }
+        List<WalletTransactionRepository.WalletTransactionBalanceByType> transactionBalance = walletTransactionRepository.findTransactionBySessionIdAndWallet(sessionID);
 
-                String monthLabel = tb.getMonth() + " " + tb.getYear();
+        if (transactionBalance == null) {
+            return new WalletTransactionChartDataDTO(null, null, null, null);
+        }
 
-                einnahmenByMonth.putIfAbsent(monthLabel, BigDecimal.ZERO);
-                ausgabenByMonth.putIfAbsent(monthLabel, BigDecimal.ZERO);
-                ersparnisseByMonth.putIfAbsent(monthLabel, BigDecimal.ZERO);
-
-                if (EINKOMMEN.getWalletTransactionTypeName().equals(tb.getName())) {
-                    einnahmenByMonth.put(monthLabel, tb.getTotal());
-                }
-
-                if (AUSGABE.getWalletTransactionTypeName().equals(tb.getName())) {
-                    ausgabenByMonth.put(monthLabel, tb.getTotal());
-                }
-
-                if (ERSPARNIS.getWalletTransactionTypeName().equals(tb.getName())) {
-                    ersparnisseByMonth.put(monthLabel, tb.getTotal());
-                }
-            });
-
-        List<String> monthLabels = new LinkedList<>(einnahmenByMonth.keySet());
-        List<BigDecimal> einnahmenList = new LinkedList<>(einnahmenByMonth.values());
-        List<BigDecimal> ausgabenList = new LinkedList<>(ausgabenByMonth.values());
-        List<BigDecimal> erspanisseList = new LinkedList<>(ersparnisseByMonth.values());
-
-        log.info("test einnahmen: ", einnahmenList);
-        log.info("test ausgabenList: ", ausgabenList);
-        log.info("test ausgabenList: ", erspanisseList);
-
-        WalletTransactionRepository.WalletTransactionBalance wtb = new WalletTransactionRepository.WalletTransactionBalance() {
-            @Override
-            public List<String> getName() {
-                return monthLabels;
+        transactionBalance.forEach(tb -> {
+            if (tb == null) {
+                return;
             }
 
-            @Override
-            public List<BigDecimal> einnahmen() {
-                return einnahmenList;
+            String month = tb.getMonth() + " " + tb.getYear();
+
+            einnahmenByMonth.putIfAbsent(month, BigDecimal.ZERO);
+            ausgabenByMonth.putIfAbsent(month, BigDecimal.ZERO);
+            ersparnisseByMonth.putIfAbsent(month, BigDecimal.ZERO);
+
+            if (EINKOMMEN.getWalletTransactionTypeName().equals(tb.getName())) {
+                einnahmenByMonth.put(month, tb.getTotal());
             }
 
-            @Override
-            public List<BigDecimal> ausgaben() {
-                return ausgabenList;
+            if (AUSGABE.getWalletTransactionTypeName().equals(tb.getName())) {
+                ausgabenByMonth.put(month, tb.getTotal());
             }
 
-            @Override
-            public List<BigDecimal> ersparnisse() {
-                return erspanisseList;
+            if (ERSPARNIS.getWalletTransactionTypeName().equals(tb.getName())) {
+                ersparnisseByMonth.put(month, tb.getTotal());
             }
-        };
+        });
 
-        return wtb;
+        return new WalletTransactionChartDataDTO(
+            new ArrayList<>(einnahmenByMonth.keySet()),
+            new ArrayList<>(einnahmenByMonth.values()),
+            new ArrayList<>(ausgabenByMonth.values()),
+            new ArrayList<>(ersparnisseByMonth.values())
+        );
     }
 }

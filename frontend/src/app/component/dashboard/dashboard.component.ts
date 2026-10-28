@@ -8,7 +8,7 @@ import { mockBilanzChartData, mockDashboardAccountPanels, mockDashboardPanels } 
 import { HttpClient } from '@angular/common/http';
 import { NeightApiService } from 'src/neight-api.service';
 import { WalletTransactionService } from 'src/app/services/wallet-transaction.service';
-import { WalletTransactionDTO } from 'src/app/dto/walletTransactionDTO';
+import { WalletTransactionChartDataDTO } from 'src/app/dto/walletTransactionChartDataDTO';
 
 @Component({
   selector: 'neightec-dashboard',
@@ -29,7 +29,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   constructor(
     protected http: HttpClient,
     protected neightApi: NeightApiService,
-    protected walletTransaction: WalletTransactionService,
+    protected walletTransactionService: WalletTransactionService,
     ) {
   }
 
@@ -37,13 +37,17 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.panels = this.fetchMockDashboardPanels();
     this.accountPanels = this.fetchMockDashboardAccountPanels();
 
-    this.fetchWalletTransaction().subscribe((transactions: WalletTransactionDTO[]) => {
-      console.error("test: ", transactions);
-    });
   }
 
   ngAfterViewInit(): void {
-    this.getChartData();
+    this.fetchWalletTransactionChartBySessionID('f40f1143-067a-43a5-870f-dde93ef2f069').subscribe({
+      next: (data: WalletTransactionChartDataDTO) => {
+        this.initChartData(data);
+      },
+      error: (error) => {
+        console.error('Error loading wallet transaction chart data:', error);
+      }
+    });
   }
 
   public fetchMockDashboardPanels(): any {
@@ -54,26 +58,27 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     return mockDashboardAccountPanels;
   }
 
-  private getChartData(): void {
+  private initChartData(chartData: WalletTransactionChartDataDTO): void {
+
     new Chart(this.bilanzChartRef.nativeElement, {
-      type: 'bar',
+      type: 'line',
       data: {
-        labels: mockBilanzChartData.labels,
+        labels: chartData.labels,
         datasets: [
           {
             label: 'Einnahmen',
-            data: mockBilanzChartData.einnahmen,
+            data: chartData.einnahmen,
             borderColor: '#20307f',
             backgroundColor: '#9c75e433',
           },
           {
             label: 'Ausgaben',
-            data: mockBilanzChartData.ausgaben,
+            data: chartData.ausgaben,
             borderColor: '#a37b78',
             backgroundColor: '#39040133',
           },{
             label: 'Ersparnisse',
-            data: mockBilanzChartData.ersparnisse,
+            data: chartData.ersparnisse,
             borderColor: '#220604',
             backgroundColor: '#59221f33',
           },
@@ -86,8 +91,14 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public fetchWalletTransaction(): any {
-    return this.walletTransaction.fetchAllWalletTransaction();
+  /**
+   * Get current transaction for balance chart in Dashboard
+   * based on sessionID
+   * @param sessionID 
+   * @returns chart data based on @WalletTransactionChartDataDTO
+   */
+  public fetchWalletTransactionChartBySessionID(sessionID: string): any {
+    return this.walletTransactionService.fetchAllWalletTransactionBySessionID(sessionID);
   }
 
 }
