@@ -1,12 +1,12 @@
 package com.neightec.neightecavserver.services.impl;
 
 import com.neightec.neightecavserver.config.WalletConfig;
+import com.neightec.neightecavserver.models.dto.WalletTransactionChartDataDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionMonthlyBalanceSummaryDTO;
 import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
 import com.neightec.neightecavserver.models.enums.WalletTransactionTypeEnum;
 import com.neightec.neightecavserver.models.neightec_data.WalletSession;
-import com.neightec.neightecavserver.models.neightec_data.WalletTransaction;
 import com.neightec.neightecavserver.repositories.interfaces.WalletSessionRepository;
 import com.neightec.neightecavserver.repositories.interfaces.WalletTransactionRepository;
 import com.neightec.neightecavserver.services.interfaces.WalletTransactionService;
@@ -15,10 +15,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static com.neightec.neightecavserver.models.enums.WalletTransactionTypeEnum.*;
 
 @Service
 @RequiredArgsConstructor
@@ -98,5 +99,56 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
                 .orElse(null);
 
         return new WalletTransactionMonthlyBalanceSummaryDTO(months, maxMonth);
+    }
+
+    @Override
+    public WalletTransactionChartDataDTO getTransactionBalanceBySessionIDAndWallet(UUID sessionID) {
+        WalletSession session = walletSessionRepository.findById(sessionID).orElse(null);
+
+        if (session == null) {
+            log.error("Wallet session not found for session ID: {}", sessionID);
+            return null;
+        }
+
+        Map<String, BigDecimal> einnahmenByMonth = new LinkedHashMap<>();
+        Map<String, BigDecimal> ausgabenByMonth = new LinkedHashMap<>();
+        Map<String, BigDecimal> ersparnisseByMonth = new LinkedHashMap<>();
+
+        List<WalletTransactionRepository.WalletTransactionBalanceByType> transactionBalance = walletTransactionRepository.findTransactionBySessionIdAndWallet(sessionID);
+
+        if (transactionBalance == null) {
+            return new WalletTransactionChartDataDTO(null, null, null, null);
+        }
+
+        transactionBalance.forEach(tb -> {
+            if (tb == null) {
+                return;
+            }
+
+            String month = tb.getMonth() + " " + tb.getYear();
+
+            einnahmenByMonth.putIfAbsent(month, BigDecimal.ZERO);
+            ausgabenByMonth.putIfAbsent(month, BigDecimal.ZERO);
+            ersparnisseByMonth.putIfAbsent(month, BigDecimal.ZERO);
+
+            if (EINKOMMEN.getWalletTransactionTypeName().equals(tb.getName())) {
+                einnahmenByMonth.put(month, tb.getTotal());
+            }
+
+            if (AUSGABE.getWalletTransactionTypeName().equals(tb.getName())) {
+                ausgabenByMonth.put(month, tb.getTotal());
+            }
+
+            if (ERSPARNIS.getWalletTransactionTypeName().equals(tb.getName())) {
+                ersparnisseByMonth.put(month, tb.getTotal());
+            }
+        });
+
+        return new WalletTransactionChartDataDTO(
+            new ArrayList<>(einnahmenByMonth.keySet()),
+            new ArrayList<>(einnahmenByMonth.values()),
+            new ArrayList<>(ausgabenByMonth.values()),
+            new ArrayList<>(ersparnisseByMonth.values())
+        );
     }
 }

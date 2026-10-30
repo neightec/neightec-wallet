@@ -69,6 +69,40 @@ public interface WalletTransactionRepository extends JpaRepository<WalletTransac
     );
 
     /**
+     * Monthly totals for one transaction type, each compared with the previous month of the same
+     * type and currency. difference/percentage_change are null for the first month;
+     * percentage_change is also null when the previous total is 0.
+     */
+    @Query(value = """
+            with monthly as (
+                select wtt.name as name,
+                       wt.currency_type as currency_type,
+                       date_trunc('month', wt."timestamp") as month_start,
+                       sum(wt.price) as total
+                from wallet_transaction wt
+                join wallet_session_to_transaction wstt
+                    on wt.id = wstt.wallet_transaction_id
+                join wallet_transaction_type wtt
+                    on wtt.id = wt.wallet_transaction_type_id
+                where wstt.wallet_session_id = :sessionId
+                group by wtt.name, wt.currency_type, date_trunc('month', wt."timestamp")
+            )
+            select name,
+                   currency_type,
+                   total,
+                   to_char(month_start, 'FMMonth') as month,
+                   to_char(month_start, 'YYYY') as year,
+                   total - lag(total) over w as difference,
+                   round((total - lag(total) over w) * 100 / nullif(lag(total) over w, 0), 2) as percentage_change
+            from monthly
+            window w as (partition by name, currency_type order by month_start)
+            order by month_start, name
+            """, nativeQuery = true)
+    List<WalletTransactionBalanceByType> findTransactionBySessionIdAndWallet(
+            @Param("sessionId") UUID sessionID
+    );
+
+    /**
      * Aggregate projection: total price per wallet transaction type.
      * This query returns no entity rows, so it must not be mapped to WalletTransaction.
      */
@@ -82,5 +116,4 @@ public interface WalletTransactionRepository extends JpaRepository<WalletTransac
         BigDecimal getDifference();
         BigDecimal getPercentage_change();
     }
-
 }

@@ -46,7 +46,8 @@ export const mockDashboardAccountPanels: any[] = [
 export const mockBilanzChartData = {
   labels: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun'],
   einnahmen: [4200, 4500, 4100, 4800, 5000, 4700],
-  ausgaben: [3100, 3300, 3600, 3200, 3400, 3000]
+  ausgaben: [3100, 3300, 3600, 3200, 3400, 3000],
+  ersparnisse: [3000, 2900, 3600, 3200, 3400, 3000]
 };
 
 const numGuests = 30; // Number of guests to generate

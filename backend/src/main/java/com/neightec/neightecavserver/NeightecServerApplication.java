@@ -8,11 +8,11 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableCaching
 @EnableScheduling
 @SpringBootApplication
-public class NeightTecAvServerApplication {
+public class NeightecServerApplication {
 
 	public static void main(String[] args) {
 
-		SpringApplication.run(NeightTecAvServerApplication.class, args);
+		SpringApplication.run(NeightecServerApplication.class, args);
 	}
 
 }
