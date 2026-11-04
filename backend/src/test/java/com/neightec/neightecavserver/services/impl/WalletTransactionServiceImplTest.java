@@ -16,12 +16,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -271,6 +269,60 @@ class WalletTransactionServiceImplTest {
 
         assertThat(result).isNull();
         verify(walletTransactionRepository, never()).findTransactionBySessionIdAndWallet(any());
+    }
+
+    @Test
+    void getTransactionBySessionID_withSessionId_shouldMapTransactionsOfSession() {
+        WalletTransaction salary = new WalletTransaction();
+        WalletTransactionDTO salaryDTO = transactionDTO("Salary", 2500);
+
+        when(walletTransactionRepository.findTransactionBySessionId(SESSION_ID)).thenReturn(List.of(salary));
+        when(walletTransactionMapper.toDTO(salary)).thenReturn(salaryDTO);
+
+        assertThat(walletTransactionService.getTransactionBySessionID(SESSION_ID)).containsExactly(salaryDTO);
+    }
+
+    @Test
+    void getTransactionBySessionID_withNullSessionId_shouldFallBackToTempSessionId() {
+        UUID tempSessionId = UUID.fromString("22222222-2222-2222-2222-222222222222");
+        ReflectionTestUtils.setField(walletTransactionService, "sessionID", tempSessionId.toString());
+
+        when(walletTransactionRepository.findTransactionBySessionId(tempSessionId)).thenReturn(List.of());
+
+        assertThat(walletTransactionService.getTransactionBySessionID(null)).isEmpty();
+
+        verify(walletTransactionRepository).findTransactionBySessionId(tempSessionId);
+    }
+
+    @Test
+    void getTransactionBySessionID_withNoTransactions_shouldReturnEmptyList() {
+        when(walletTransactionRepository.findTransactionBySessionId(SESSION_ID)).thenReturn(List.of());
+
+        assertThat(walletTransactionService.getTransactionBySessionID(SESSION_ID)).isEmpty();
+    }
+
+    @Test
+    void getTransactionByTempSessionID_withCoupleTransactions_shouldNotReturnEmptyList() {
+        UUID tempSessionId = UUID.fromString("22222222-2222-2222-2222-222222222222");
+        ReflectionTestUtils.setField(walletTransactionService, "sessionID", tempSessionId.toString());
+
+        WalletTransaction salary = new WalletTransaction();
+        WalletTransaction ice = new WalletTransaction();
+        WalletTransaction parking = new WalletTransaction();
+        WalletTransactionDTO salaryDTO = transactionDTO("Salary", 2500);
+        WalletTransactionDTO iceDTO = transactionDTO("Ice_Cream", 5);
+        WalletTransactionDTO parkingDTO = transactionDTO("Parking", 12);
+
+        when(walletTransactionRepository.findTransactionBySessionId(tempSessionId))
+                .thenReturn(List.of(salary, ice, parking));
+        when(walletTransactionMapper.toDTO(salary)).thenReturn(salaryDTO);
+        when(walletTransactionMapper.toDTO(ice)).thenReturn(iceDTO);
+        when(walletTransactionMapper.toDTO(parking)).thenReturn(parkingDTO);
+
+        List<WalletTransactionDTO> result = walletTransactionService.getTransactionBySessionID(null);
+
+        assertThat(result).isNotEmpty().containsExactly(salaryDTO, iceDTO, parkingDTO);
+        verify(walletTransactionRepository).findTransactionBySessionId(tempSessionId);
     }
 
     private static WalletTransactionDTO transactionDTO(String name, long price) {

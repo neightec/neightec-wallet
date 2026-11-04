@@ -18,6 +18,7 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -145,10 +146,61 @@ public class WalletTransactionControllerTest {
     }
 
     @Test
-    void getTransactionBalance_withoutSessionIdParam_shouldReturnBadRequest() throws Exception {
+    void getTransactionBalance_withoutSessionIdParam_shouldDelegateWithNullSessionId() throws Exception {
+        // sessionId is optional: the service falls back to the configured temp session
         mockMvc.perform(get("/wallet-transaction/get-transaction-balance")
+                        .param("transactionType", "Einnahmen")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(walletTransactionService).getTransactionBalanceBySessionIDAndWalletTransactionType(null, "Einnahmen");
+    }
+
+    @Test
+    void getTransactionsByID_shouldReturnTransactionsOfSession() throws Exception {
+        UUID sessionId = UUID.fromString("11111111-1111-1111-1111-111111111111");
+
+        when(walletTransactionService.getTransactionBySessionID(sessionId)).thenReturn(List.of(
+                new WalletTransactionDTO("Salary", "WORK", BigDecimal.valueOf(2500.00), "EUR", "November", "2026"),
+                new WalletTransactionDTO("Groceries", "FOOD", BigDecimal.valueOf(45.99), "EUR", "November", "2026")
+        ));
+
+        mockMvc.perform(get("/wallet-transaction/get-transaction-by-id")
+                        .param("sessionId", sessionId.toString())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].name").value("Salary"))
+                .andExpect(jsonPath("$[0].category_type").value("WORK"))
+                .andExpect(jsonPath("$[0].price").value(2500.00))
+                .andExpect(jsonPath("$[0].currency_type").value("EUR"))
+                .andExpect(jsonPath("$[1].name").value("Groceries"));
+
+        verify(walletTransactionService).getTransactionBySessionID(sessionId);
+    }
+
+    @Test
+    void getTransactionsByID_withoutSessionIdParam_shouldDelegateWithNullSessionId() throws Exception {
+        when(walletTransactionService.getTransactionBySessionID(null)).thenReturn(List.of());
+
+        mockMvc.perform(get("/wallet-transaction/get-transaction-by-id")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
+
+        verify(walletTransactionService).getTransactionBySessionID(null);
+    }
+
+    @Test
+    void getTransactionsByID_withInvalidSessionId_shouldReturnBadRequest() throws Exception {
+        // regression: the frontend once sent the literal string "null"
+        mockMvc.perform(get("/wallet-transaction/get-transaction-by-id")
+                        .param("sessionId", "null")
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+
+        verifyNoInteractions(walletTransactionService);
     }
 
     @Test
