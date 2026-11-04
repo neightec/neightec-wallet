@@ -28,7 +28,7 @@ public class WalletTransactionController {
      * @return list of wallet transaction DTO
      */
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<WalletTransactionDTO>> getAllFiles() {
+    public ResponseEntity<List<WalletTransactionDTO>> getAllTransaction() {
         log.info("/wallet-transaction/all called!");
         return ResponseEntity.ok(walletTransactionService.getAll());
     }
@@ -51,7 +51,7 @@ public class WalletTransactionController {
      */
     @GetMapping(value = "/get-transaction-balance", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WalletTransactionMonthlyBalanceSummaryDTO> getTransactionBalance(
-            @RequestParam("sessionId") UUID sessionID,
+            @RequestParam(value = "sessionId", required = false) UUID sessionID,
             @RequestParam("transactionType") String transactionType
     ) {
         log.info("/get-transaction-balance called with sessionID={}, transactionType={}", sessionID, transactionType);
@@ -65,10 +65,23 @@ public class WalletTransactionController {
      */
     @GetMapping(value = "/get-transaction-balance-chart", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<WalletTransactionChartDataDTO> getTransactionBalanceChart(
-            @RequestParam("sessionId") UUID sessionID
+            @RequestParam(value = "sessionId", required = false) UUID sessionID
     ) {
         log.info("/get-transaction-balance-chart called with sessionID={}", sessionID);
         return ResponseEntity.ok(walletTransactionService.getTransactionBalanceBySessionIDAndWallet(sessionID));
+    }
+
+    /**
+     * REST all wallet transactions by typeEnum
+     * api to get dto values for charts
+     * @return list of wallet transaction DTO
+     */
+    @GetMapping(value = "/get-transaction-by-id", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<WalletTransactionDTO>> getTransactionsByID(
+            @RequestParam(value = "sessionId", required = false) UUID sessionID
+    ) {
+        log.info("/get-transaction-by-id called with sessionID={}", sessionID);
+        return ResponseEntity.ok(walletTransactionService.getTransactionBySessionID(sessionID));
     }
 
 }

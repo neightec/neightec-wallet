@@ -31,11 +31,21 @@ export class WalletTransactionService {
     }
   }  
   
-  public fetchAllWalletTransactionBySessionID(sessionID: string): Observable<WalletTransactionChartDataDTO> {
+  public fetchAllWalletTransactionChartBySessionID(sessionID: string | null): Observable<WalletTransactionChartDataDTO> {
     try {
       const url = `${this.apiEndpoint}wallet-transaction/get-transaction-balance-chart`;
-      const params = new HttpParams().set('sessionId', sessionID);
+      const params = sessionID ? new HttpParams().set('sessionId', sessionID) : new HttpParams();
       return this.http.get<WalletTransactionChartDataDTO>(url, { params });
+    } catch (e) {
+      throw e;
+    }
+  }
+
+  public fetchAllWalletTransactionBySessionID(sessionID: string | null): Observable<WalletTransactionDTO[]> {
+    try {
+      const url = `${this.apiEndpoint}wallet-transaction/get-transaction-by-id`;
+      const params = sessionID ? new HttpParams().set('sessionId', sessionID) : new HttpParams();
+      return this.http.get<WalletTransactionDTO[]>(url, { params });
     } catch (e) {
       throw e;
     }

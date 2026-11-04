@@ -79,13 +79,11 @@ import { UploadButtonFilesComponent } from './features/modules/dashboard/compone
 import { DashboardOverviewComponent } from './features/modules/dashboard/pages/dashboard-overview/dashboard-overview.component';
 import { RegisterGuestDialogComponent } from './features/modules/dashboard/components/register-guest-dialog/register-guest-dialog.component';
 import { TranslateHttpLoader, TRANSLATE_HTTP_LOADER_CONFIG } from '@ngx-translate/http-loader';
-import { catchError, of, throwError } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
-import { AuthService } from './auth/auth.service';
-import { ACCESS_TOKEN_HEADER_KEY } from './models/auth.model';
 import { NeightecHomeComponent } from './component/neightec-home/neightec-home.component';
 import { NeightecTableComponent } from './component/neightec-table/neightec-table.component';
 import { NeightecUploadListComponent } from './component/neightec-upload-list/neightec-upload-list.component';
+import {TransactionEffects} from "./features/modules/transaction/store/transaction.effects";
+import {transactionReducer, transactionReducerKey} from "./features/modules/transaction/store/transaction.reducer";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader();
@@ -115,7 +113,7 @@ export function initializeTranslation(translate: TranslateService) {
 //   };
 // }
 
-@NgModule({ 
+@NgModule({
   declarations: [
     AppComponent,
     NeightWeddingPagenotfoundComponent,
@@ -129,7 +127,7 @@ export function initializeTranslation(translate: TranslateService) {
     NeightecUploadListComponent,
     // DashboardComponent
   ],
-  bootstrap: [AppComponent], 
+  bootstrap: [AppComponent],
   imports: [
     MatListModule,
     MatSidenavModule,
@@ -149,8 +147,10 @@ export function initializeTranslation(translate: TranslateService) {
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreModule.forFeature(dashboardReducer.dashboardReducerKey, dashboardReducer.dashboardReducer),
+    StoreModule.forFeature(transactionReducerKey, transactionReducer),
     EffectsModule.forFeature([
-        DashboardEffects,
+      DashboardEffects,
+      TransactionEffects,
     ]),
     TranslateModule.forRoot(translateModuleConfig),
     IconModule,
@@ -165,26 +165,27 @@ export function initializeTranslation(translate: TranslateService) {
     ModalModule,
     PlaceholderModule,
     InputModule
-    ], 
-    providers: [
-      NeightApiService,
-      LoginService,
-      FetchGuestService,
-      { provide: NEIGHT_CONFIG, useValue: neightEnvironment },
-      {
-        provide: TRANSLATE_HTTP_LOADER_CONFIG,
-        useValue: {
-          prefix: './assets/i18n/',
-          suffix: '.json',
-        }
-      },
-      provideAppInitializer(() => {
+  ],
+  providers: [
+    NeightApiService,
+    LoginService,
+    FetchGuestService,
+    {provide: NEIGHT_CONFIG, useValue: neightEnvironment},
+    {
+      provide: TRANSLATE_HTTP_LOADER_CONFIG,
+      useValue: {
+        prefix: './assets/i18n/',
+        suffix: '.json',
+      }
+    },
+    provideAppInitializer(() => {
       const initializerFn = (initializeTranslation)(inject(TranslateService));
       return initializerFn();
     }),
-      provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptorsFromDi()),
   ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA], })
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+})
 export class AppModule { 
 
   groupedIcons: any[] = [];

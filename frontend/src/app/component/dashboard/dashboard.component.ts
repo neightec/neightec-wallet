@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.fetchWalletTransactionChartBySessionID('f40f1143-067a-43a5-870f-dde93ef2f069').subscribe({
+    this.fetchWalletTransactionChartBySessionID(null).subscribe({
       next: (data: WalletTransactionChartDataDTO) => {
         this.initChartData(data);
       },
@@ -98,7 +98,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
    * @returns chart data based on @WalletTransactionChartDataDTO
    */
   public fetchWalletTransactionChartBySessionID(sessionID: string): any {
-    return this.walletTransactionService.fetchAllWalletTransactionBySessionID(sessionID);
+    return this.walletTransactionService.fetchAllWalletTransactionChartBySessionID(sessionID);
   }
-
 }
