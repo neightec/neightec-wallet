@@ -18,4 +18,5 @@ public interface WalletTransactionService {
     List<WalletTransactionDTO> getTransactionBalanceBySessionID(UUID sessionID);
     WalletTransactionMonthlyBalanceSummaryDTO getTransactionBalanceBySessionIDAndWalletTransactionType(UUID sessionID, String transactionType);
     WalletTransactionChartDataDTO getTransactionBalanceBySessionIDAndWallet(UUID sessionID);
+    List<WalletTransactionDTO> getTransactionBySessionID(UUID sessionID);
 }

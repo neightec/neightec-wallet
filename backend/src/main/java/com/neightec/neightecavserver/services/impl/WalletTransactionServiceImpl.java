@@ -13,6 +13,7 @@ import com.neightec.neightecavserver.services.interfaces.WalletTransactionServic
 import com.neightec.neightecavserver.services.mapper.WalletTransactionMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -30,6 +31,9 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
     private final WalletTransactionMapper walletTransactionMapper;
     private final WalletConfig walletConfig; // TODO use this
     private final WalletSessionRepository walletSessionRepository;
+
+    @Value("${com.neightec.server.temp.sessionID}")
+    private String sessionID;
 
     @Override
     public List<WalletTransactionDTO> getAll() {
@@ -75,6 +79,8 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
 
     @Override
     public WalletTransactionMonthlyBalanceSummaryDTO getTransactionBalanceBySessionIDAndWalletTransactionType(UUID sessionID, String transactionType) {
+        sessionID = sessionID == null ? UUID.fromString(this.sessionID) : sessionID;
+
         WalletSession session = walletSessionRepository.findById(sessionID).orElse(null);
 
         if (session == null) {
@@ -103,6 +109,8 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
 
     @Override
     public WalletTransactionChartDataDTO getTransactionBalanceBySessionIDAndWallet(UUID sessionID) {
+        sessionID = sessionID == null ? UUID.fromString(this.sessionID) : sessionID;
+
         WalletSession session = walletSessionRepository.findById(sessionID).orElse(null);
 
         if (session == null) {
@@ -150,5 +158,15 @@ public class WalletTransactionServiceImpl implements WalletTransactionService {
             new ArrayList<>(ausgabenByMonth.values()),
             new ArrayList<>(ersparnisseByMonth.values())
         );
+    }
+
+    @Override
+    public List<WalletTransactionDTO> getTransactionBySessionID(UUID sessionID) {
+        sessionID = sessionID == null ? UUID.fromString(this.sessionID) : sessionID;
+
+        return walletTransactionRepository.findTransactionBySessionId(sessionID)
+                .stream()
+                .map(walletTransactionMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }
