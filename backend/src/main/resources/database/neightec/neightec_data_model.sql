@@ -111,3 +111,23 @@ CREATE TABLE IF NOT EXISTS neightec.wallet_session_to_transaction (
     wallet_transaction_id  uuid NOT NULL REFERENCES neightec.wallet_transaction(id),
     CONSTRAINT pk_wallet_session_to_transaction PRIMARY KEY (id)
 );
+
+--liquibase formatted sql
+--changeset nsu:6
+--comment: add new data model for account
+CREATE TABLE IF NOT EXISTS neightec.wallet_account (
+    id uuid  NOT NULL,
+    name VARCHAR(50),
+    balance NUMERIC(10,2),
+    creation_timestamp TIMESTAMP DEFAULT null,
+    deletion_timestamp TIMESTAMP DEFAULT null,
+    is_archived boolean DEFAULT false,
+    CONSTRAINT pk_wallet_account PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS neightec.wallet_session_to_account (
+    id 		        uuid NOT NULL,
+    wallet_session_id 		uuid NOT NULL REFERENCES neightec.wallet_session(id),
+    wallet_account_id  uuid NOT NULL REFERENCES neightec.wallet_account(id),
+    CONSTRAINT pk_wallet_session_to_account PRIMARY KEY (id)
+);

@@ -7,23 +7,22 @@
 <div class="main-dashboard">
   <mat-tab-group 
     mat-stretch-tabs="false" 
-    mat-align-tabs="start">
+    mat-align-tabs="start"
+    [selectedIndex]="1">
     <mat-tab label="Dashboard">
-    <neightec-dashboard>
-
-    </neightec-dashboard>
+        <neightec-dashboard></neightec-dashboard>
     </mat-tab>
     <mat-tab label="Konten">
-    Konten
+        <neightec-accounts-overview></neightec-accounts-overview>
     </mat-tab>
     <mat-tab label="Transaktionen">
         <neightec-transaction-overview></neightec-transaction-overview>
     </mat-tab>
     <mat-tab label="Budget">
-    Budget
+        Budget
     </mat-tab>
     <mat-tab label="Kategorien">
-    Kategorien
+        Kategorien
     </mat-tab>
   </mat-tab-group>
 </div>
