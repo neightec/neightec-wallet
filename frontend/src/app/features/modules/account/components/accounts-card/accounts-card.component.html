@@ -1,1 +1,10 @@
-<p>accounts-card works!</p>
+<mat-card class="account-card">
+  <mat-card-header>
+    <mat-card-title class="account-name">{{ account().name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <span class="account-balance" [class.negative]="+account().balance < 0">
+      {{ account().balance | number: '1.2-2' }} {{ account().currency ?? 'EUR' }}
+    </span>
+  </mat-card-content>
+</mat-card>

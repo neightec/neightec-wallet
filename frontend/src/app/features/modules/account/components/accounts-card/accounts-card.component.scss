@@ -1,0 +1,8 @@
+.account-balance {
+  font-size: 1.5rem;
+  font-weight: 500;
+
+  &.negative {
+    color: #da1e28;
+  }
+}

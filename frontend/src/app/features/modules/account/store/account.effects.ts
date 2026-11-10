@@ -15,7 +15,7 @@ export class AccountEffects {
     return this.actions$.pipe(
       ofType(loadAccounts),
       mergeMap(() =>
-        this.accountService.fetchAllAccounts().pipe(
+        this.accountService.fetchAccountsBySessionID(null).pipe(
           map(response => loadAccountsSuccess({ data: response })),
           catchError(() => of(loadAccountsError()))
         )

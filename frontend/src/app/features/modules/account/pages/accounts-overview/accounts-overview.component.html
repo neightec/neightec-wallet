@@ -1,1 +1,7 @@
-<p>accounts-overview works!</p>
+<div class="accounts-grid">
+  @for (account of accounts$ | async; track $index) {
+    <neightec-accounts-card [account]="account"></neightec-accounts-card>
+  } @empty {
+    <p class="accounts-empty">Keine Konten vorhanden.</p>
+  }
+</div>
