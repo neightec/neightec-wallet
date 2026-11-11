@@ -21,4 +21,14 @@ export class AccountService {
     const params = sessionID ? new HttpParams().set('sessionId', sessionID) : new HttpParams();
     return this.http.get<AccountDTO[]>(url, { params });
   }
+
+  /**
+   * Add new account 
+   * Without a session ID the backend falls back to com.neightec.server.temp.sessionID.
+   */
+  public addAccountBySessionID(sessionID: string | null): Observable<AccountDTO> {
+    const url = `${this.apiEndpoint}wallet-account/add-account-by-session-id`;
+    const params = sessionID ? new HttpParams().set('sessionId', sessionID) : new HttpParams();
+    return this.http.post<AccountDTO>(url, { params });
+  }
 }

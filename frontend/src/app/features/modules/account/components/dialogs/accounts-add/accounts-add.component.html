@@ -1,0 +1,17 @@
+<p>accounts-add works!</p>
+<form [formGroup]="formGroupAccountAdd">
+  <label>
+    Name:
+    <input formControlName="accountName">
+  </label>
+  <label>
+    Kontostand:
+    <input formControlName="accounBalance">
+  </label>
+  <button (click)="onSubmit()">
+    Anlegen
+  </button>
+  <button (click)="closeDialog()">
+    <mat-icon fontIcon="close"></mat-icon>
+  </button>
+</form>
