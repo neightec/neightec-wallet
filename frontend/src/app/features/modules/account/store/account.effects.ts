@@ -29,8 +29,8 @@ export class AccountEffects {
   addAccount$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(addAccount),
-      mergeMap(() =>
-        this.accountService.addAccountBySessionID(null).pipe(
+      mergeMap(action =>
+        this.accountService.addAccountBySessionID(null, action.data).pipe(
           map(response => addAccountSuccess({ data: response })),
           catchError(() => of(addAccountError()))
         )

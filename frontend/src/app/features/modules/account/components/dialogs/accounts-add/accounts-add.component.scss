@@ -1,0 +1,94 @@
+:host {
+  display: block;
+
+  .accounts-add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-width: 320px;
+    padding: 24px;
+    box-sizing: border-box;
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      h2 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+      }
+    }
+
+    &__field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.875rem;
+      color: #555;
+
+      input {
+        padding: 10px 12px;
+        font-size: 1rem;
+        border: 1px solid #c4c4c4;
+        border-radius: 8px;
+        outline: none;
+        transition: border-color 0.15s, box-shadow 0.15s;
+
+        &:focus {
+          border-color: #3f51b5;
+          box-shadow: 0 0 0 3px rgba(63, 81, 181, 0.15);
+        }
+      }
+    }
+
+    &__actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 8px;
+    }
+  }
+
+  .button {
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    cursor: pointer;
+
+    &--primary {
+      background-color: #3f51b5;
+      color: #fff;
+
+      &:hover {
+        background: #303f9f;
+      }
+    }
+
+    &--secondary {
+      background-color: transparent;
+      border-color: #c4c4c4;
+      color: #333;
+
+      &:hover {
+        background-color: #f2f2f2;
+      }
+    }
+  }
+
+  .icon-button {
+    display: flex;
+    padding: 4px;
+    background: none;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #666;
+
+    &:hover {
+      background-color: #f2f2f2;
+    }
+  }
+}

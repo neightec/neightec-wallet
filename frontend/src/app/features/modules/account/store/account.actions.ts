@@ -23,7 +23,10 @@ export const loadAccountsError
   = createAction(AccountActions.LoadAccountsError);
 
 export const addAccount
-  = createAction(AccountActions.AddAccount);
+  = createAction(
+    AccountActions.AddAccount,
+    props<{ data: AccountDTO }>()
+  );
 
 export const addAccountSuccess
   = createAction(

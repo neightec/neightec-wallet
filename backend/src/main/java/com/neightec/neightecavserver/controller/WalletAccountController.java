@@ -1,11 +1,10 @@
 package com.neightec.neightecavserver.controller;
 
 import com.neightec.neightecavserver.models.dto.WalletAccountDTO;
-import com.neightec.neightecavserver.models.dto.WalletTransactionDTO;
 import com.neightec.neightecavserver.services.interfaces.WalletAccountService;
-import com.neightec.neightecavserver.services.interfaces.WalletTransactionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +33,24 @@ public class WalletAccountController {
     }
 
     /**
+     * Creates an account and links it to the session.
+     * Without a session ID the backend falls back to com.neightec.server.temp.sessionID.
+     * @return created account
+     */
+    @PostMapping(value = "/add-account-by-session-id",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WalletAccountDTO> addAccountBySessionID(
+        @RequestParam(value = "sessionId", required = false) UUID sessionID,
+        @RequestBody WalletAccountDTO account
+    ) {
+        log.info("/wallet-account/add-account-by-session-id called!");
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(walletAccountService.addAccountBySessionID(sessionID, account));
+    }
+
+    /**
      * TODO
-     * add account
      * remove account
      * export csv
      */

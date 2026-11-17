@@ -12,4 +12,5 @@ import java.util.UUID;
 public interface WalletAccountService {
 
     List<WalletAccountDTO> getAccountsBySessionID(UUID sessionID);
+    WalletAccountDTO addAccountBySessionID(UUID sessionID, WalletAccountDTO account);
 }

@@ -2,10 +2,11 @@ package com.neightec.neightecavserver.models.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import java.math.BigDecimal;
+import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class WalletAccountDTO {
     private String name;
     private String balance;

@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { loadAccountsError, loadAccountsSuccess } from "./account.actions";
+import { addAccountSuccess, loadAccountsError, loadAccountsSuccess } from "./account.actions";
 import { AccountState } from "./account.state";
 
 export const accountReducerKey = 'account-reducer-key';
@@ -17,5 +17,9 @@ export const accountReducer = createReducer(
   on(loadAccountsError, (state) => ({
     ...state,
     data: [],
+  })),
+  on(addAccountSuccess, (state, action) => ({
+    ...state,
+    data: [...state.data, action.data],
   }))
 );
