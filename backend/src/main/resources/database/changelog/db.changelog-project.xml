@@ -17,6 +17,7 @@
     <include file="classpath:database/neightec/wallet_session.sql"/>
     <include file="classpath:database/neightec/wallet_user.sql"/>
     <include file="classpath:database/neightec/wallet_session_to_transaction.sql"/>
+    <include file="classpath:database/neightec/wallet_account.sql"/>
 
     <!-- core deprecation changelogs /!\ use with caution -->
     <!--<include file="classpath:/db/changelog/db.changelog-deprecation-7.20.7-0.json"/>-->

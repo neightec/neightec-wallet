@@ -84,6 +84,8 @@ import { NeightecTableComponent } from './component/neightec-table/neightec-tabl
 import { NeightecUploadListComponent } from './component/neightec-upload-list/neightec-upload-list.component';
 import {TransactionEffects} from "./features/modules/transaction/store/transaction.effects";
 import {transactionReducer, transactionReducerKey} from "./features/modules/transaction/store/transaction.reducer";
+import {AccountEffects} from "./features/modules/account/store/account.effects";
+import {accountReducer, accountReducerKey} from "./features/modules/account/store/account.reducer";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader();
@@ -148,9 +150,11 @@ export function initializeTranslation(translate: TranslateService) {
     EffectsModule.forRoot([]),
     StoreModule.forFeature(dashboardReducer.dashboardReducerKey, dashboardReducer.dashboardReducer),
     StoreModule.forFeature(transactionReducerKey, transactionReducer),
+    StoreModule.forFeature(accountReducerKey, accountReducer),
     EffectsModule.forFeature([
       DashboardEffects,
       TransactionEffects,
+      AccountEffects
     ]),
     TranslateModule.forRoot(translateModuleConfig),
     IconModule,

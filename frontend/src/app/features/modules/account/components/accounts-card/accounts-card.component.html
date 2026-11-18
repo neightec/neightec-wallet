@@ -1,0 +1,20 @@
+<mat-card class="account-card" *ngIf="account() != null; else accountAddCondition">
+  <mat-card-header>
+    <mat-card-title class="account-name">{{ account().name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <span class="account-balance" [class.negative]="+account().balance < 0">
+      {{ account().balance | number: '1.2-2' }} {{ account().currency ?? 'EUR' }}
+    </span>
+  </mat-card-content>
+</mat-card>
+<ng-template #accountAddCondition>
+    <mat-card class="account-card account-card-add" (click)="accountAdd()">
+        <mat-card-content>
+            <mat-icon
+                aria-hidden="false"
+                fontIcon="add">
+            </mat-icon>
+        </mat-card-content>
+    </mat-card>
+</ng-template>

@@ -4,6 +4,9 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { HeaderComponent } from 'src/app/component/header/header.component';
 import { DashboardComponent } from 'src/app/component/dashboard/dashboard.component';
 import { TransactionOverviewComponent } from "src/app/features/modules/transaction/pages/transaction-overview/transaction-overview.component";
+import {
+  AccountsOverviewComponent
+} from "../../features/modules/account/pages/accounts-overview/accounts-overview.component";
 
 @Component({
   selector: 'neightec-dashboard-page',
@@ -13,7 +16,8 @@ import { TransactionOverviewComponent } from "src/app/features/modules/transacti
     MatDivider,
     MatTabsModule,
     DashboardComponent,
-    TransactionOverviewComponent
+    TransactionOverviewComponent,
+    AccountsOverviewComponent
   ],
   templateUrl: './dashboard.page.html',
   styleUrl: './dashboard.page.scss'

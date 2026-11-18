@@ -1,0 +1,10 @@
+<div class="accounts-grid">
+  @for (account of accounts$ | async; track $index) {
+    <neightec-accounts-card [account]="account"></neightec-accounts-card>
+  } @empty {
+    <p class="accounts-empty">Keine Konten vorhanden.</p>
+  }
+<neightec-accounts-card
+    [account]="null">
+</neightec-accounts-card>
+</div>

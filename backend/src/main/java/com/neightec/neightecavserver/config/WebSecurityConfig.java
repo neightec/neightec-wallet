@@ -37,6 +37,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         log.info("WebSecurityConfig is active!");
         http
+                .csrf(csrf -> csrf.disable())
                 .cors(httpSecurityCorsConfigurer ->
                         httpSecurityCorsConfigurer.configurationSource(
                                 corsConfigurationSource()
