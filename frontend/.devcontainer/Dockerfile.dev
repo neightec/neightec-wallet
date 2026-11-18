@@ -1,10 +1,18 @@
 FROM node:20-alpine
- 
-RUN apk add --no-cache git curl
- 
+
+RUN apk add --no-cache git curl openssh-client
+
 RUN npm cache clean --force
 RUN npm install -g @angular/cli --no-audit --no-fund
- 
-RUN git config --global --add safe.directory '*'
- 
+
+# --system instead of --global: the host's ~/.ssh is mounted into the home dir, ~/.gitconfig is left to the user.
+RUN git config --system --add safe.directory '*'
+
+# Run as the image's "node" user (uid/gid 1000 = host user), so files created in the
+# bind-mounted repo (including .git) stay owned by the host user instead of root.
+# node_modules is pre-created so the anonymous volume mounted there inherits this owner.
+RUN mkdir -p /workspace/frontend/node_modules /home/node/.ssh \
+    && chown -R node:node /workspace /home/node
+USER node
+
 EXPOSE 4201

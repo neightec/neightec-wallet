@@ -1,11 +1,23 @@
 FROM maven:3-eclipse-temurin-17
 
-RUN apt-get update && apt-get install -y git curl vim \
+RUN apt-get update && apt-get install -y git curl vim openssh-client \
     && rm -rf /var/lib/apt/lists/*
 
 ENV MAVEN_OPTS="-Xmx2g -Xms1g -XX:+UseG1GC"
 ENV _JAVA_OPTIONS="-Xmx4g -Xms3g"
 
-RUN git config --global --add safe.directory '*'
+# --system instead of --global: the host's ~/.ssh is mounted into the home dir, ~/.gitconfig is left to the user.
+RUN git config --system --add safe.directory '*'
+
+# Run as user "dev" with uid/gid 1000 (= host user), so files created in the bind-mounted
+# repo (including .git and target/) stay owned by the host user instead of root.
+# The base image ships an "ubuntu" user with uid 1000, which is replaced.
+RUN (userdel -r ubuntu 2>/dev/null || true) \
+    && groupadd -g 1000 dev \
+    && useradd -m -u 1000 -g 1000 -s /bin/bash dev \
+    && mkdir -p /home/dev/.m2 /home/dev/.ssh \
+    && chown -R dev:dev /home/dev
+ENV MAVEN_CONFIG=/home/dev/.m2
+USER dev
 
 EXPOSE 8080

@@ -73,6 +73,7 @@ services:
     volumes:
       - ../../:/workspace:cached
       - /workspace/frontend/node_modules
+      - ~/.ssh:/home/node/.ssh:ro
     environment:
       - CHOKIDAR_USEPOLLING=true
       - WATCHPACK_POLLING=true
@@ -93,7 +94,8 @@ services:
     mem_reservation: 3g
     volumes:
       - ../../:/workspace:cached
-      - neightec-backend-cache:/root/.m2
+      - neightec-backend-m2:/home/dev/.m2
+      - ~/.ssh:/home/dev/.ssh:ro
     networks:
       - neightec-dev-env
 
@@ -106,8 +108,8 @@ volumes:
     name: neightec-redis-data
   neightec-teedy-volume:
     name: neightec-teedy-data
-  neightec-backend-cache:
-    name: neightec-backend-data
+  neightec-backend-m2:
+    name: neightec-backend-m2
     
 networks:
   neightec-dev-env:
