@@ -7,16 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -69,6 +74,53 @@ class WalletAccountControllerTest {
         mockMvc.perform(get("/wallet-account/get-accounts-by-session-id")
                         .param("sessionId", "not-a-uuid")
                         .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void addAccountBySessionID_shouldReturnCreatedAccount() throws Exception {
+        WalletAccountDTO request = new WalletAccountDTO("Giro", "12.5", "€");
+        when(walletAccountService.addAccountBySessionID(SESSION_ID, request))
+                .thenReturn(new WalletAccountDTO("Giro", "12.50", null));
+
+        mockMvc.perform(post("/wallet-account/add-account-by-session-id")
+                        .param("sessionId", SESSION_ID.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Giro\",\"balance\":\"12.5\",\"currency\":\"€\"}"))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name").value("Giro"))
+                .andExpect(jsonPath("$.balance").value("12.50"));
+    }
+
+    @Test
+    void addAccountBySessionID_withoutSessionId_shouldPassNullToService() throws Exception {
+        when(walletAccountService.addAccountBySessionID(eq(null), any()))
+                .thenReturn(new WalletAccountDTO("Giro", "0", null));
+
+        mockMvc.perform(post("/wallet-account/add-account-by-session-id")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Giro\",\"balance\":\"0\"}"))
+                .andExpect(status().isCreated());
+
+        verify(walletAccountService).addAccountBySessionID(eq(null), any());
+    }
+
+    @Test
+    void addAccountBySessionID_whenServiceRejects_shouldPropagateStatus() throws Exception {
+        when(walletAccountService.addAccountBySessionID(eq(SESSION_ID), any()))
+                .thenThrow(new ResponseStatusException(HttpStatus.NOT_FOUND, "Wallet session not found"));
+
+        mockMvc.perform(post("/wallet-account/add-account-by-session-id")
+                        .param("sessionId", SESSION_ID.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"name\":\"Giro\",\"balance\":\"1\"}"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void addAccountBySessionID_withoutBody_shouldReturnBadRequest() throws Exception {
+        mockMvc.perform(post("/wallet-account/add-account-by-session-id")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
     }
 }

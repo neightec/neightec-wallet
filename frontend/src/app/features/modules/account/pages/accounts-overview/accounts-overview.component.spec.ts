@@ -26,7 +26,7 @@ describe('AccountsOverviewComponent', () => {
     expect(dispatchSpy.calls.mostRecent().args[0]).toEqual(loadAccounts());
   });
 
-  it('should render one card per account', () => {
+  it('should render one card per account plus the add card', () => {
     store.overrideSelector(selectAccounts, [
       { name: 'Girokonto', balance: '1830.10', currency: null },
       { name: 'Tagesgeld', balance: '5600.00', currency: null },
@@ -36,7 +36,8 @@ describe('AccountsOverviewComponent', () => {
     fixture.detectChanges();
 
     const cards = fixture.nativeElement.querySelectorAll('neightec-accounts-card');
-    expect(cards.length).toBe(3);
+    expect(cards.length).toBe(4);
+    expect(fixture.nativeElement.querySelectorAll('.account-name').length).toBe(3);
   });
 
   it('should show empty hint without accounts', () => {

@@ -1,9 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
+import { AccountsAddComponent } from '../dialogs/accounts-add/accounts-add.component';
 
 import { AccountsCardComponent } from './accounts-card.component';
 
 describe('AccountsCardComponent', () => {
   let fixture: ComponentFixture<AccountsCardComponent>;
+  let dialog: jasmine.SpyObj<MatDialog>;
 
   const render = (balance: string, currency: string | null) => {
     fixture.componentRef.setInput('account', { name: 'Girokonto', balance, currency });
@@ -13,7 +16,8 @@ describe('AccountsCardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AccountsCardComponent]
+      imports: [AccountsCardComponent],
+      providers: [{ provide: MatDialog, useValue: dialog = jasmine.createSpyObj('MatDialog', ['open']) }]
     }).compileComponents();
 
     fixture = TestBed.createComponent(AccountsCardComponent);
@@ -30,5 +34,16 @@ describe('AccountsCardComponent', () => {
     const balance = el.querySelector('.account-balance')!;
     expect(balance.textContent).toContain('EUR');
     expect(balance.classList).toContain('negative');
+  });
+
+  it('should render the add card and open the add dialog on click when account is null', () => {
+    fixture.componentRef.setInput('account', null);
+    fixture.detectChanges();
+    const addCard = (fixture.nativeElement as HTMLElement).querySelector<HTMLElement>('.account-card-add')!;
+
+    expect(addCard).not.toBeNull();
+    addCard.click();
+
+    expect(dialog.open).toHaveBeenCalledWith(AccountsAddComponent, jasmine.objectContaining({ disableClose: true }));
   });
 });
